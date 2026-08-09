@@ -311,7 +311,15 @@ export class UIController extends EventEmitter {
         if (this.uiEnabled) {
             this.menuBar = new MenuBar(this.appContainer);
         }
-        this.appContainer.appendChild(this.canvas);
+        this.canvasWrapper = document.createElement('div');
+        this.canvasWrapper.style.position = 'relative';
+        this.canvasWrapper.style.width = '100%';
+        this.canvasWrapper.style.display = 'flex';
+        this.canvasWrapper.style.justifyContent = 'center';
+        this.canvasWrapper.style.alignItems = 'center';
+        this.appContainer.appendChild(this.canvasWrapper);
+
+        this.canvasWrapper.appendChild(this.canvas);
         this.canvas.style.objectFit = 'contain';
         this.canvas.style.display = 'block';
 
@@ -323,10 +331,10 @@ export class UIController extends EventEmitter {
             this.virtualKeyboard = new VirtualKeyboard(this.appContainer, emulator);
         }
 
-
         this.startButton = document.createElement('button');
         this.startButton.innerHTML = playIcon;
-        this.appContainer.appendChild(this.startButton);
+        this.canvasWrapper.appendChild(this.startButton);
+
         this.startButton.style.position = 'absolute';
         this.startButton.style.top = '50%';
         this.startButton.style.left = '50%';

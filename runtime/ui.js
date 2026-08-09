@@ -562,12 +562,24 @@ export class UIController extends EventEmitter {
             document.body.classList.add('fit-to-width');
             this.appContainer.style.width = '100%';
             this.appContainer.style.maxWidth = '100%';
-            this.appContainer.style.height = '100vh';
+            this.appContainer.style.height = '100%';
+            this.appContainer.style.maxHeight = '100dvh';
             this.appContainer.style.display = 'flex';
             this.appContainer.style.flexDirection = 'column';
             this.appContainer.style.justifyContent = 'space-between';
+            this.appContainer.style.boxSizing = 'border-box';
+            this.appContainer.style.overflow = 'hidden';
 
-            this.canvasWrapper.style.flex = '1';
+            if (this.menuBar && this.menuBar.elem) {
+                this.menuBar.elem.style.flexShrink = '0';
+            }
+            if (this.toolbar && this.toolbar.elem) {
+                this.toolbar.elem.style.flexShrink = '0';
+            }
+
+            this.canvasWrapper.style.flex = '1 1 0px';
+            this.canvasWrapper.style.minHeight = '0';
+            this.canvasWrapper.style.minWidth = '0';
             this.canvasWrapper.style.width = '100%';
             this.canvasWrapper.style.height = '100%';
             this.canvasWrapper.style.display = 'flex';
@@ -585,7 +597,8 @@ export class UIController extends EventEmitter {
             if (parent) {
                 parent.style.width = '100%';
                 parent.style.maxWidth = '100%';
-                parent.style.height = '100vh';
+                parent.style.height = '100%';
+                parent.style.maxHeight = '100dvh';
             }
             const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
             if (this.virtualKeyboard) {

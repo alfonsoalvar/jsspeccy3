@@ -89,13 +89,13 @@ export class VirtualKeyboard {
                 .jsspeccy-virtual-keyboard {
                     width: 100%;
                     max-width: 100%;
-                    margin: 8px auto 0 auto;
-
-                    padding: 6px;
+                    margin: 0;
+                    flex-shrink: 0;
+                    padding: 4px 6px;
                     box-sizing: border-box;
                     background: #1c1c1e;
-                    border-top: 2px solid #3a3a3c;
-                    border-radius: 8px;
+                    border-top: 1px solid #3a3a3c;
+                    border-radius: 0;
                     user-select: none;
                     -webkit-user-select: none;
                     touch-action: manipulation;

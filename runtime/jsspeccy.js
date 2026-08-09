@@ -622,31 +622,14 @@ window.JSSpeccy = (container, opts) => {
         if (ui.virtualKeyboard) {
             ui.toolbar.addButton(
                 keyboardIcon,
-                {label: 'Toggle touch keyboard', align: 'right'},
+                {label: 'Toggle touch keyboard'},
                 () => {
                     ui.virtualKeyboard.toggle();
                 }
             );
         }
 
-        const fullscreenButton = ui.toolbar.addButton(
-            fullscreenIcon,
-            {label: 'Enter full screen mode', align: 'right'},
-            () => {
-                ui.toggleFullscreen();
-            }
-        )
 
-
-        ui.on('setZoom', (factor) => {
-            if (factor == 'fullscreen') {
-                fullscreenButton.setIcon(exitFullscreenIcon);
-                fullscreenButton.setLabel('Exit full screen mode');
-            } else {
-                fullscreenButton.setIcon(fullscreenIcon);
-                fullscreenButton.setLabel('Enter full screen mode');
-            }
-        });
     }
 
     const openFileDialog = () => {

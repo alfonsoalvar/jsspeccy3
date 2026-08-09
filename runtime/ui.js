@@ -197,18 +197,18 @@ export class Toolbar {
         this.machineBadge.style.alignItems = 'center';
         this.machineBadge.style.justifyContent = 'center';
         this.machineBadge.style.height = '26px';
-        this.machineBadge.style.margin = '2px 3px';
-        this.machineBadge.style.padding = '0 8px';
+        this.machineBadge.style.margin = '2px 4px';
+        this.machineBadge.style.padding = '0 6px';
         this.machineBadge.style.fontSize = '12px';
-        this.machineBadge.style.fontWeight = '500';
-        this.machineBadge.style.color = '#a0a0b0';
-        this.machineBadge.style.backgroundColor = '#2a2a34';
-        this.machineBadge.style.border = '1px solid #3a3a48';
-        this.machineBadge.style.borderRadius = '4px';
-        this.machineBadge.style.boxSizing = 'border-box';
+        this.machineBadge.style.fontWeight = '700';
+        this.machineBadge.style.color = '#c0c0d0';
+
+        this.machineBadge.style.backgroundColor = 'transparent';
+        this.machineBadge.style.border = 'none';
         this.machineBadge.style.userSelect = 'none';
         this.machineBadge.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
         this.rightContainer.appendChild(this.machineBadge);
+
 
         this.currentMouseenterEvent = null;
         this.currentMouseoutEvent = null;
@@ -295,9 +295,10 @@ class ToolbarButton {
         if (this.elem.firstChild) {
             this.elem.firstChild.style.height = '18px';
             this.elem.firstChild.style.verticalAlign = 'middle';
-            this.elem.firstChild.style.filter = 'invert(1) brightness(1.5)';
+            this.elem.firstChild.style.filter = 'brightness(0) invert(1)';
         }
     }
+
     setLabel(label) {
         this.elem.title = label;
     }

@@ -478,7 +478,9 @@ export class UIController extends EventEmitter {
             }
         })
 
-        this.setZoom(opts.zoom || 1);
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+        this.setZoom(isMobileDevice ? 'fit' : (opts.zoom || 1));
+
 
         if (!opts.sandbox) {
             /* drag-and-drop for loading files */

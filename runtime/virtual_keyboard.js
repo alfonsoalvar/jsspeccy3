@@ -195,7 +195,12 @@ export class VirtualKeyboard {
 
                 const labelElem = document.createElement('span');
                 labelElem.className = 'main-label';
-                labelElem.textContent = item.label;
+                if (/^[A-Z]$/.test(item.label)) {
+                    labelElem.setAttribute('data-letter', item.label);
+                    labelElem.textContent = this.capsLocked ? item.label : item.label.toLowerCase();
+                } else {
+                    labelElem.textContent = item.label;
+                }
                 keyElem.appendChild(labelElem);
 
                 this.attachKeyEvents(keyElem, item);
@@ -203,6 +208,14 @@ export class VirtualKeyboard {
             });
 
             this.elem.appendChild(rowElem);
+        });
+    }
+
+    updateLetterCase() {
+        const letterElems = this.elem.querySelectorAll('.main-label[data-letter]');
+        letterElems.forEach(elem => {
+            const letter = elem.getAttribute('data-letter');
+            elem.textContent = this.capsLocked ? letter : letter.toLowerCase();
         });
     }
 
@@ -225,8 +238,10 @@ export class VirtualKeyboard {
                         this.emulator.keyboardHandler.keyUp(SPECCY.CAPS_SHIFT);
                     }
                 }
+                this.updateLetterCase();
                 return;
             }
+
 
 
             if (this.emulator.keyboardHandler) {

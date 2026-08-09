@@ -2,6 +2,8 @@ import EventEmitter from 'events';
 
 import playIcon from './icons/play.svg';
 import closeIcon from './icons/close.svg';
+import { VirtualKeyboard } from './virtual_keyboard.js';
+
 
 
 export class MenuBar {
@@ -256,6 +258,11 @@ export class UIController extends EventEmitter {
         if (this.uiEnabled) {
             this.toolbar = new Toolbar(this.appContainer);
         }
+
+        if (opts.virtualKeyboard !== false) {
+            this.virtualKeyboard = new VirtualKeyboard(this.appContainer, emulator);
+        }
+
 
         this.startButton = document.createElement('button');
         this.startButton.innerHTML = playIcon;

@@ -17,6 +17,8 @@ import fullscreenIcon from './icons/fullscreen.svg';
 import exitFullscreenIcon from './icons/exitfullscreen.svg';
 import tapePlayIcon from './icons/tape_play.svg';
 import tapePauseIcon from './icons/tape_pause.svg';
+import keyboardIcon from './icons/keyboard.svg';
+
 
 const scriptUrl = document.currentScript.src;
 
@@ -425,7 +427,9 @@ window.JSSpeccy = (container, opts) => {
         zoom: opts.zoom || 1,
         sandbox: opts.sandbox,
         uiEnabled: uiEnabled,
+        virtualKeyboard: ('virtualKeyboard' in opts) ? opts.virtualKeyboard : true,
     });
+
 
     if (keyboardEnabled) {
         if (ui.appContainer.tabIndex == -1) {
@@ -576,6 +580,16 @@ window.JSSpeccy = (container, opts) => {
             tapeButton.setLabel('Start tape');
         });
 
+        if (ui.virtualKeyboard) {
+            ui.toolbar.addButton(
+                keyboardIcon,
+                {label: 'Toggle touch keyboard', align: 'right'},
+                () => {
+                    ui.virtualKeyboard.toggle();
+                }
+            );
+        }
+
         const fullscreenButton = ui.toolbar.addButton(
             fullscreenIcon,
             {label: 'Enter full screen mode', align: 'right'},
@@ -583,6 +597,7 @@ window.JSSpeccy = (container, opts) => {
                 ui.toggleFullscreen();
             }
         )
+
 
         ui.on('setZoom', (factor) => {
             if (factor == 'fullscreen') {
@@ -711,7 +726,9 @@ window.JSSpeccy = (container, opts) => {
         toggleFullscreen: () => {ui.toggleFullscreen();},
         enterFullscreen: () => {ui.enterFullscreen();},
         exitFullscreen: () => {ui.exitFullscreen();},
+        toggleVirtualKeyboard: () => {if (ui.virtualKeyboard) ui.virtualKeyboard.toggle();},
         setMachine: (model) => {emu.setMachine(model);},
+
         openFileDialog: () => {openFileDialog();},
         openUrl: (url) => {
             emu.openUrl(url).catch((err) => {alert(err);});

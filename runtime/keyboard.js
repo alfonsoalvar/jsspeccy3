@@ -1,5 +1,4 @@
-﻿// Mapping from Spectrum key identifiers to keyboard matrix info
-const SPECCY = {
+export const SPECCY = {
     ONE: {row: 3, mask: 0x01},
     TWO: {row: 3, mask: 0x02},
     THREE: {row: 3, mask: 0x04},
@@ -45,15 +44,16 @@ const SPECCY = {
     BREAK_SPACE: {row: 7, mask: 0x01},
 };
 
-function sym(speccyKey) {
+export function sym(speccyKey) {
     // patch key definition to indicate that symbol shift should be activated
     return {...speccyKey, sym: true}
 }
 
-function caps(speccyKey) {
+export function caps(speccyKey) {
     // patch key definition to indicate that caps shift should be activated
     return {...speccyKey, caps: true}
 }
+
 
 // Mapping from JS key codes to Spectrum key definitions
 const KEY_CODES = {

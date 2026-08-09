@@ -548,9 +548,11 @@ window.JSSpeccy = (container, opts) => {
 
 
         const aboutMenu = ui.menuBar.addMenu('About');
-        aboutMenu.addItem('About JSSpeccy3...', () => {
+        aboutMenu.addItem('About JSSpeccy v4.0.0', () => {
             openAboutDialog();
         });
+
+
 
         ui.on('setZoom', setZoomCheckbox);
         setZoomCheckbox(ui.zoom);
@@ -643,21 +645,21 @@ window.JSSpeccy = (container, opts) => {
         const body = ui.showDialog();
         body.innerHTML = `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 16px 20px; color: #e0e0e0; line-height: 1.6;">
-                <h2 style="margin-top: 0; color: #ffffff; font-size: 20px; font-weight: 700; border-bottom: 1px solid #3a3a48; padding-bottom: 8px;">About JSSpeccy3</h2>
+                <h2 style="margin-top: 0; color: #ffffff; font-size: 20px; font-weight: 700; border-bottom: 1px solid #3a3a48; padding-bottom: 8px;">About JSSpeccy v4.0.0</h2>
                 <p style="margin: 12px 0; font-size: 14px;">
-                    <strong>JSSpeccy3</strong> is a web-based ZX Spectrum emulator built with JavaScript and WebAssembly.
+                    <strong>JSSpeccy v4.0.0</strong> is a web-based ZX Spectrum emulator built with JavaScript and WebAssembly, featuring an adaptive mobile layout and virtual touch keyboard.
                 </p>
                 <div style="background-color: #262632; border: 1px solid #3a3a48; border-radius: 8px; padding: 12px 16px; margin: 16px 0;">
-                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Fork Author & Maintainer</p>
+                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Fork Author & Maintainer (v4.0.0)</p>
                     <p style="margin: 0; font-size: 15px; font-weight: 600; color: #ffffff;">Alfonso Alvar</p>
                     <p style="margin: 2px 0 0 0; font-size: 13px;">
                         <a href="mailto:hola@alfonsoalvar.com" style="color: #60a5fa; text-decoration: none;">hola@alfonsoalvar.com</a>
                     </p>
                 </div>
                 <div style="background-color: #262632; border: 1px solid #3a3a48; border-radius: 8px; padding: 12px 16px; margin: 16px 0;">
-                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Original Project</p>
+                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Original Base Project</p>
                     <p style="margin: 0; font-size: 14px; color: #d0d0d0;">
-                        Originally created by Matt Westcott (Gasman).
+                        Originally created as JSSpeccy3 by Matt Westcott (Gasman).
                     </p>
                     <p style="margin: 4px 0 0 0; font-size: 13px;">
                         <a href="https://github.com/gasman/jsspeccy3" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">github.com/gasman/jsspeccy3</a>
@@ -666,6 +668,7 @@ window.JSSpeccy = (container, opts) => {
             </div>
         `;
     };
+
 
     const openGameBrowser = () => {
 

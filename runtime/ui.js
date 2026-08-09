@@ -82,12 +82,16 @@ export class Menu {
         button.addEventListener('mouseleave', () => {
             button.style.backgroundColor = '#2a2a34';
         });
-
         elem.appendChild(button);
+
 
         this.list = document.createElement('ul');
         this.list.style.position = 'absolute';
-        this.list.style.width = '150px';
+
+        this.list.style.minWidth = '160px';
+        this.list.style.width = 'max-content';
+        this.list.style.whiteSpace = 'nowrap';
+
         this.list.style.backgroundColor = '#1e1e24';
         this.list.style.color = '#f0f0f5';
         this.list.style.listStyleType = 'none';
@@ -99,6 +103,7 @@ export class Menu {
         this.list.style.display = 'none';
         this.list.style.zIndex = '1000';
         elem.appendChild(this.list);
+
 
         button.addEventListener('click', () => {
             if (this.isOpen()) {
@@ -136,8 +141,10 @@ export class Menu {
         button.style.backgroundColor = 'transparent';
         button.style.color = '#f0f0f5';
         button.style.fontSize = '12px';
+        button.style.whiteSpace = 'nowrap';
         button.style.cursor = 'pointer';
         button.style.transition = 'background-color 0.1s';
+
 
         button.addEventListener('mouseenter', () => {
             button.style.backgroundColor = '#2d2d3a';
@@ -552,16 +559,33 @@ export class UIController extends EventEmitter {
         }
         const parent = this.appContainer.parentElement;
         if (factor === 'fit' || factor === 'fit-width') {
-            this.canvas.style.width = '100%';
+            document.body.classList.add('fit-to-width');
+            this.appContainer.style.width = '100%';
+            this.appContainer.style.maxWidth = '100%';
+            this.appContainer.style.height = '100vh';
+            this.appContainer.style.display = 'flex';
+            this.appContainer.style.flexDirection = 'column';
+            this.appContainer.style.justifyContent = 'space-between';
+
+            this.canvasWrapper.style.flex = '1';
+            this.canvasWrapper.style.width = '100%';
+            this.canvasWrapper.style.height = '100%';
+            this.canvasWrapper.style.display = 'flex';
+            this.canvasWrapper.style.alignItems = 'center';
+            this.canvasWrapper.style.justifyContent = 'center';
+            this.canvasWrapper.style.overflow = 'hidden';
+
             this.canvas.style.maxWidth = '100%';
+            this.canvas.style.maxHeight = '100%';
+            this.canvas.style.width = 'auto';
             this.canvas.style.height = 'auto';
             this.canvas.style.aspectRatio = '4 / 3';
             this.canvas.style.objectFit = 'contain';
-            this.appContainer.style.width = '100%';
-            this.appContainer.style.maxWidth = '100%';
+
             if (parent) {
                 parent.style.width = '100%';
                 parent.style.maxWidth = '100%';
+                parent.style.height = '100vh';
             }
             const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
             if (this.virtualKeyboard) {
@@ -571,20 +595,30 @@ export class UIController extends EventEmitter {
                     this.virtualKeyboard.hide();
                 }
             }
-            this.updateCanvasMaxHeight();
         } else {
+            document.body.classList.remove('fit-to-width');
+            this.appContainer.style.height = '';
+            this.appContainer.style.display = '';
+            this.appContainer.style.flexDirection = '';
+            this.appContainer.style.justifyContent = '';
+
+            this.canvasWrapper.style.flex = '';
+            this.canvasWrapper.style.height = '';
 
             const numZoom = parseFloat(this.zoom) || 1;
+
             const displayWidth = 320 * numZoom;
             const displayHeight = 240 * numZoom;
             this.canvas.style.width = displayWidth + 'px';
             this.canvas.style.height = displayHeight + 'px';
+            this.canvas.style.maxWidth = '';
             this.canvas.style.maxHeight = '';
             this.canvas.style.aspectRatio = '';
             this.appContainer.style.width = displayWidth + 'px';
             this.appContainer.style.maxWidth = displayWidth + 'px';
             if (parent) {
                 parent.style.maxWidth = displayWidth + 'px';
+                parent.style.height = '';
             }
             if (this.virtualKeyboard) {
                 this.virtualKeyboard.hide();
@@ -595,11 +629,9 @@ export class UIController extends EventEmitter {
     }
 
     updateCanvasMaxHeight() {
-        if (this.zoom === 'fit' || this.zoom === 'fit-width') {
-            const kbVisible = this.virtualKeyboard && this.virtualKeyboard.visible;
-            this.canvas.style.maxHeight = kbVisible ? 'calc(100vh - 290px)' : 'calc(100vh - 70px)';
-        }
+        // Handled dynamically by flex layout
     }
+
 
 
 

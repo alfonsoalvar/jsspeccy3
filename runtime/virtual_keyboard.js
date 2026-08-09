@@ -1,4 +1,4 @@
-import { SPECCY, caps } from './keyboard.js';
+import { SPECCY, caps, sym } from './keyboard.js';
 
 const KEYBOARD_LAYOUT = [
     [
@@ -12,6 +12,7 @@ const KEYBOARD_LAYOUT = [
         { label: '8', key: SPECCY.EIGHT },
         { label: '9', key: SPECCY.NINE },
         { label: '0', key: SPECCY.ZERO },
+        { label: 'DEL', key: caps(SPECCY.ZERO), flex: 1.5, type: 'action' },
     ],
     [
         { label: 'Q', key: SPECCY.Q },
@@ -35,10 +36,10 @@ const KEYBOARD_LAYOUT = [
         { label: 'J', key: SPECCY.J },
         { label: 'K', key: SPECCY.K },
         { label: 'L', key: SPECCY.L },
-        { label: 'ENTER', key: SPECCY.ENTER, flex: 1.5, type: 'action' },
+        { label: 'ENTER', key: SPECCY.ENTER, flex: 2, type: 'action' },
     ],
     [
-        { label: 'CAPS', key: SPECCY.CAPS_SHIFT, flex: 1.2, type: 'shift', isCaps: true },
+        { label: 'CAPS', key: SPECCY.CAPS_SHIFT, flex: 1.5, type: 'shift', isCaps: true },
         { label: 'Z', key: SPECCY.Z },
         { label: 'X', key: SPECCY.X },
         { label: 'C', key: SPECCY.C },
@@ -46,16 +47,21 @@ const KEYBOARD_LAYOUT = [
         { label: 'B', key: SPECCY.B },
         { label: 'N', key: SPECCY.N },
         { label: 'M', key: SPECCY.M },
-        { label: 'SPACE', key: SPECCY.BREAK_SPACE, flex: 2.2, type: 'action' },
+        { label: ',', key: sym(SPECCY.N), type: 'action' },
+        { label: '.', key: sym(SPECCY.M), type: 'action' },
+        { label: 'CAPS', key: SPECCY.CAPS_SHIFT, flex: 1.5, type: 'shift', isCaps: true },
     ],
+
     [
-        { label: '◀', key: caps(SPECCY.FIVE), type: 'nav' },
-        { label: '▲', key: caps(SPECCY.SEVEN), type: 'nav' },
-        { label: '▼', key: caps(SPECCY.SIX), type: 'nav' },
-        { label: '▶', key: caps(SPECCY.EIGHT), type: 'nav' },
-        { label: 'DEL', key: caps(SPECCY.ZERO), flex: 1.3, type: 'action' },
+        { label: 'SPACE', key: SPECCY.BREAK_SPACE, flex: 5, type: 'action' },
+        { label: '◀', key: caps(SPECCY.FIVE), flex: 1.2, type: 'nav' },
+        { label: '▲', key: caps(SPECCY.SEVEN), flex: 1.2, type: 'nav' },
+        { label: '▼', key: caps(SPECCY.SIX), flex: 1.2, type: 'nav' },
+        { label: '▶', key: caps(SPECCY.EIGHT), flex: 1.2, type: 'nav' },
     ]
 ];
+
+
 
 
 export class VirtualKeyboard {
@@ -207,13 +213,14 @@ export class VirtualKeyboard {
 
             if (item.isCaps) {
                 this.capsLocked = !this.capsLocked;
+                const capsButtons = this.elem.querySelectorAll('[is-caps="true"]');
                 if (this.capsLocked) {
-                    keyElem.classList.add('shift-active');
+                    capsButtons.forEach(btn => btn.classList.add('shift-active'));
                     if (this.emulator.keyboardHandler) {
                         this.emulator.keyboardHandler.keyDown(SPECCY.CAPS_SHIFT);
                     }
                 } else {
-                    keyElem.classList.remove('shift-active');
+                    capsButtons.forEach(btn => btn.classList.remove('shift-active'));
                     if (this.emulator.keyboardHandler) {
                         this.emulator.keyboardHandler.keyUp(SPECCY.CAPS_SHIFT);
                     }
@@ -221,9 +228,13 @@ export class VirtualKeyboard {
                 return;
             }
 
+
             if (this.emulator.keyboardHandler) {
                 if (item.key && item.key.caps) {
                     this.emulator.keyboardHandler.keyDown(SPECCY.CAPS_SHIFT);
+                }
+                if (item.key && item.key.sym) {
+                    this.emulator.keyboardHandler.keyDown(SPECCY.SYMBOL_SHIFT);
                 }
                 this.emulator.keyboardHandler.keyDown(item.key);
             }
@@ -242,8 +253,12 @@ export class VirtualKeyboard {
                 if (item.key && item.key.caps && !this.capsLocked) {
                     this.emulator.keyboardHandler.keyUp(SPECCY.CAPS_SHIFT);
                 }
+                if (item.key && item.key.sym) {
+                    this.emulator.keyboardHandler.keyUp(SPECCY.SYMBOL_SHIFT);
+                }
             }
         };
+
 
 
         if (item.isCaps) keyElem.setAttribute('is-caps', 'true');

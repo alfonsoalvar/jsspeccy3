@@ -490,7 +490,36 @@ window.JSSpeccy = (container, opts) => {
             emu.setMachine(5);
             emu.focus();
         });
+
+        const machineNames = {
+            48: 'Spectrum 48K',
+            128: 'Spectrum 128K',
+            5: 'Pentagon 128'
+        };
+        const updateMachineUI = (type) => {
+            const name = machineNames[type] || 'Spectrum 48K';
+            if (type == 48) {
+                machine48Item.setBullet();
+                machine128Item.unsetBullet();
+                machinePentagonItem.unsetBullet();
+            } else if (type == 128) {
+                machine48Item.unsetBullet();
+                machine128Item.setBullet();
+                machinePentagonItem.unsetBullet();
+            } else if (type == 5) {
+                machine48Item.unsetBullet();
+                machine128Item.unsetBullet();
+                machinePentagonItem.setBullet();
+            }
+            if (ui.toolbar) {
+                ui.toolbar.setMachine(name);
+            }
+        };
+        emu.on('setMachine', updateMachineUI);
+        updateMachineUI(emu.machineType || 48);
+
         const displayMenu = ui.menuBar.addMenu('Display');
+
 
         const fitWidthItem = displayMenu.addItem('Fit to width', () => {ui.setZoom('fit'); emu.focus();});
         const zoomItemsBySize = {

@@ -173,21 +173,60 @@ export class Toolbar {
         this.elem = document.createElement('div');
         this.elem.style.backgroundColor = '#1e1e24';
         this.elem.style.borderTop = '1px solid #2d2d38';
-        this.elem.style.padding = '3px 4px';
+        this.elem.style.padding = '3px 6px';
         this.elem.style.bottom = '0';
         this.elem.style.width = '100%';
         this.elem.style.boxSizing = 'border-box';
+        this.elem.style.display = 'flex';
+        this.elem.style.alignItems = 'center';
+        this.elem.style.justifyContent = 'space-between';
         container.appendChild(this.elem);
+
+        this.leftContainer = document.createElement('div');
+        this.leftContainer.style.display = 'flex';
+        this.leftContainer.style.alignItems = 'center';
+        this.elem.appendChild(this.leftContainer);
+
+        this.rightContainer = document.createElement('div');
+        this.rightContainer.style.display = 'flex';
+        this.rightContainer.style.alignItems = 'center';
+        this.elem.appendChild(this.rightContainer);
+
+        this.machineBadge = document.createElement('div');
+        this.machineBadge.style.display = 'inline-flex';
+        this.machineBadge.style.alignItems = 'center';
+        this.machineBadge.style.justifyContent = 'center';
+        this.machineBadge.style.height = '26px';
+        this.machineBadge.style.margin = '2px 3px';
+        this.machineBadge.style.padding = '0 8px';
+        this.machineBadge.style.fontSize = '12px';
+        this.machineBadge.style.fontWeight = '500';
+        this.machineBadge.style.color = '#a0a0b0';
+        this.machineBadge.style.backgroundColor = '#2a2a34';
+        this.machineBadge.style.border = '1px solid #3a3a48';
+        this.machineBadge.style.borderRadius = '4px';
+        this.machineBadge.style.boxSizing = 'border-box';
+        this.machineBadge.style.userSelect = 'none';
+        this.machineBadge.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        this.rightContainer.appendChild(this.machineBadge);
+
         this.currentMouseenterEvent = null;
         this.currentMouseoutEvent = null;
     }
     addButton(icon, opts, onClick) {
         opts = opts || {};
         const button = new ToolbarButton(icon, opts, onClick);
-        if (opts.align == 'right') button.elem.style.float = 'right';
-        this.elem.appendChild(button.elem);
+        if (opts.align == 'right') {
+            this.rightContainer.insertBefore(button.elem, this.machineBadge);
+        } else {
+            this.leftContainer.appendChild(button.elem);
+        }
         return button;
     }
+    setMachine(name) {
+        this.machineBadge.textContent = name;
+    }
+
     enterFullscreen() {
         this.elem.style.position = 'absolute';
     }
@@ -223,14 +262,20 @@ export class Toolbar {
 class ToolbarButton {
     constructor(icon, opts, onClick) {
         this.elem = document.createElement('button');
+        this.elem.style.display = 'inline-flex';
+        this.elem.style.alignItems = 'center';
+        this.elem.style.justifyContent = 'center';
+        this.elem.style.height = '26px';
         this.elem.style.margin = '2px 3px';
-        this.elem.style.padding = '3px 7px';
+        this.elem.style.padding = '0 7px';
         this.elem.style.backgroundColor = '#2a2a34';
         this.elem.style.color = '#f0f0f5';
         this.elem.style.border = '1px solid #3a3a48';
         this.elem.style.borderRadius = '4px';
+        this.elem.style.boxSizing = 'border-box';
         this.elem.style.cursor = 'pointer';
         this.elem.style.transition = 'background-color 0.15s, border-color 0.15s';
+
 
         this.elem.addEventListener('mouseenter', () => {
             this.elem.style.backgroundColor = '#383846';

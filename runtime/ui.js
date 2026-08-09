@@ -538,7 +538,11 @@ export class UIController extends EventEmitter {
                 parent.style.width = '100%';
                 parent.style.maxWidth = '100%';
             }
+            if (this.virtualKeyboard) {
+                this.virtualKeyboard.show();
+            }
         } else {
+
             const numZoom = parseFloat(this.zoom) || 1;
             const displayWidth = 320 * numZoom;
             const displayHeight = 240 * numZoom;
@@ -551,7 +555,11 @@ export class UIController extends EventEmitter {
             if (parent) {
                 parent.style.maxWidth = displayWidth + 'px';
             }
+            if (this.virtualKeyboard) {
+                this.virtualKeyboard.hide();
+            }
         }
+
         this.emit('setZoom', factor);
     }
 

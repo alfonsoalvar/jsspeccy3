@@ -10,8 +10,10 @@ export class MenuBar {
     constructor(container) {
         this.elem = document.createElement('div');
         this.elem.style.display = 'flow-root';
-        this.elem.style.backgroundColor = '#eee';
-        this.elem.style.fontFamily = 'Arial, Helvetica, sans-serif';
+        this.elem.style.backgroundColor = '#1e1e24';
+        this.elem.style.color = '#f0f0f5';
+        this.elem.style.borderBottom = '1px solid #2d2d38';
+        this.elem.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
         this.elem.style.top = '0';
         this.elem.style.width = '100%';
         container.appendChild(this.elem);
@@ -63,19 +65,39 @@ export class Menu {
         container.appendChild(elem);
 
         const button = document.createElement('button');
-        button.style.margin = '2px';
+        button.style.margin = '2px 4px';
+        button.style.padding = '3px 8px';
+        button.style.backgroundColor = '#2a2a34';
+        button.style.color = '#f0f0f5';
+        button.style.border = '1px solid #3a3a48';
+        button.style.borderRadius = '4px';
+        button.style.fontSize = '12px';
+        button.style.cursor = 'pointer';
+        button.style.transition = 'background-color 0.15s';
         button.innerText = title;
+
+        button.addEventListener('mouseenter', () => {
+            button.style.backgroundColor = '#383846';
+        });
+        button.addEventListener('mouseleave', () => {
+            button.style.backgroundColor = '#2a2a34';
+        });
+
         elem.appendChild(button);
 
         this.list = document.createElement('ul');
         this.list.style.position = 'absolute';
         this.list.style.width = '150px';
-        this.list.style.backgroundColor = '#eee';
+        this.list.style.backgroundColor = '#1e1e24';
+        this.list.style.color = '#f0f0f5';
         this.list.style.listStyleType = 'none';
         this.list.style.margin = '0';
-        this.list.style.padding = '0';
-        this.list.style.border = '1px solid #888';
+        this.list.style.padding = '4px 0';
+        this.list.style.border = '1px solid #3a3a48';
+        this.list.style.borderRadius = '6px';
+        this.list.style.boxShadow = '0 8px 24px rgba(0,0,0,0.5)';
         this.list.style.display = 'none';
+        this.list.style.zIndex = '1000';
         elem.appendChild(this.list);
 
         button.addEventListener('click', () => {
@@ -110,15 +132,20 @@ export class Menu {
         button.style.width = '100%';
         button.style.textAlign = 'left';
         button.style.borderWidth = '0';
-        button.style.paddingTop = '4px';
-        button.style.paddingBottom = '4px';
+        button.style.padding = '6px 12px';
+        button.style.backgroundColor = 'transparent';
+        button.style.color = '#f0f0f5';
+        button.style.fontSize = '12px';
+        button.style.cursor = 'pointer';
+        button.style.transition = 'background-color 0.1s';
 
-        // eww.
         button.addEventListener('mouseenter', () => {
-            button.style.backgroundColor = '#ddd';
+            button.style.backgroundColor = '#2d2d3a';
+            button.style.color = '#ffffff';
         });
-        button.addEventListener('mouseout', () => {
-            button.style.backgroundColor = 'inherit';
+        button.addEventListener('mouseleave', () => {
+            button.style.backgroundColor = 'transparent';
+            button.style.color = '#f0f0f5';
         });
         if (onClick) {
             button.addEventListener('click', onClick);
@@ -144,9 +171,12 @@ export class Menu {
 export class Toolbar {
     constructor(container) {
         this.elem = document.createElement('div');
-        this.elem.style.backgroundColor = '#ccc';
+        this.elem.style.backgroundColor = '#1e1e24';
+        this.elem.style.borderTop = '1px solid #2d2d38';
+        this.elem.style.padding = '3px 4px';
         this.elem.style.bottom = '0';
         this.elem.style.width = '100%';
+        this.elem.style.boxSizing = 'border-box';
         container.appendChild(this.elem);
         this.currentMouseenterEvent = null;
         this.currentMouseoutEvent = null;
@@ -193,26 +223,46 @@ export class Toolbar {
 class ToolbarButton {
     constructor(icon, opts, onClick) {
         this.elem = document.createElement('button');
-        this.elem.style.margin = '2px';
+        this.elem.style.margin = '2px 3px';
+        this.elem.style.padding = '3px 7px';
+        this.elem.style.backgroundColor = '#2a2a34';
+        this.elem.style.color = '#f0f0f5';
+        this.elem.style.border = '1px solid #3a3a48';
+        this.elem.style.borderRadius = '4px';
+        this.elem.style.cursor = 'pointer';
+        this.elem.style.transition = 'background-color 0.15s, border-color 0.15s';
+
+        this.elem.addEventListener('mouseenter', () => {
+            this.elem.style.backgroundColor = '#383846';
+            this.elem.style.borderColor = '#4e4e5e';
+        });
+        this.elem.addEventListener('mouseleave', () => {
+            this.elem.style.backgroundColor = '#2a2a34';
+            this.elem.style.borderColor = '#3a3a48';
+        });
+
         this.setIcon(icon);
         if (opts.label) this.setLabel(opts.label);
         this.elem.addEventListener('click', onClick);
     }
     setIcon(icon) {
         this.elem.innerHTML = icon;
-        this.elem.firstChild.style.height = '20px';
-        this.elem.firstChild.style.verticalAlign = 'middle';
+        if (this.elem.firstChild) {
+            this.elem.firstChild.style.height = '18px';
+            this.elem.firstChild.style.verticalAlign = 'middle';
+            this.elem.firstChild.style.filter = 'invert(1) brightness(1.5)';
+        }
     }
     setLabel(label) {
         this.elem.title = label;
     }
     disable() {
         this.elem.disabled = true;
-        this.elem.firstChild.style.opacity = '0.5';
+        if (this.elem.firstChild) this.elem.firstChild.style.opacity = '0.4';
     }
     enable() {
         this.elem.disabled = false;
-        this.elem.firstChild.style.opacity = '1';
+        if (this.elem.firstChild) this.elem.firstChild.style.opacity = '1';
     }
 }
 
@@ -227,13 +277,23 @@ export class UIController extends EventEmitter {
         if (this.uiEnabled) {
             this.dialog = document.createElement('div');
             this.dialog.style.display = 'none';
+            this.dialog.style.backgroundColor = '#1e1e24';
+            this.dialog.style.color = '#f0f0f5';
+            this.dialog.style.border = '1px solid #3a3a48';
+            this.dialog.style.borderRadius = '8px';
+            this.dialog.style.boxShadow = '0 10px 30px rgba(0,0,0,0.6)';
             container.appendChild(this.dialog);
             const dialogCloseButton = document.createElement('button');
             dialogCloseButton.innerHTML = closeIcon;
             dialogCloseButton.style.float = 'right';
             dialogCloseButton.style.border = 'none';
-            dialogCloseButton.firstChild.style.height = '20px';
-            dialogCloseButton.firstChild.style.verticalAlign = 'middle';
+            dialogCloseButton.style.backgroundColor = 'transparent';
+            dialogCloseButton.style.cursor = 'pointer';
+            if (dialogCloseButton.firstChild) {
+                dialogCloseButton.firstChild.style.height = '20px';
+                dialogCloseButton.firstChild.style.verticalAlign = 'middle';
+                dialogCloseButton.firstChild.style.filter = 'invert(1)';
+            }
             this.dialog.appendChild(dialogCloseButton);
             dialogCloseButton.addEventListener('click', () => {
                 this.hideDialog();
@@ -274,17 +334,26 @@ export class UIController extends EventEmitter {
         this.startButton.style.height = '64px';
         this.startButton.style.marginLeft = '-48px';
         this.startButton.style.marginTop = '-32px';
-        this.startButton.style.backgroundColor = 'rgba(160, 160, 160, 0.7)';
-        this.startButton.style.border = 'none';
-        this.startButton.style.borderRadius = '4px';
-        this.startButton.firstChild.style.height = '56px';
-        this.startButton.firstChild.style.verticalAlign = 'middle';
+        this.startButton.style.backgroundColor = 'rgba(20, 20, 28, 0.85)';
+        this.startButton.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+        this.startButton.style.borderRadius = '12px';
+        this.startButton.style.backdropFilter = 'blur(8px)';
+        this.startButton.style.cursor = 'pointer';
+        this.startButton.style.transition = 'background-color 0.2s, border-color 0.2s, transform 0.1s';
+        if (this.startButton.firstChild) {
+            this.startButton.firstChild.style.height = '48px';
+            this.startButton.firstChild.style.verticalAlign = 'middle';
+            this.startButton.firstChild.style.filter = 'invert(1)';
+        }
         this.startButton.addEventListener('mouseenter', () => {
-            this.startButton.style.backgroundColor = 'rgba(128, 128, 128, 0.7)';
+            this.startButton.style.backgroundColor = 'rgba(0, 122, 255, 0.9)';
+            this.startButton.style.borderColor = '#007aff';
         });
         this.startButton.addEventListener('mouseleave', () => {
-            this.startButton.style.backgroundColor = 'rgba(160, 160, 160, 0.7)';
+            this.startButton.style.backgroundColor = 'rgba(20, 20, 28, 0.85)';
+            this.startButton.style.borderColor = 'rgba(255, 255, 255, 0.2)';
         });
+
         this.startButton.addEventListener('click', (e) => {
             emulator.start();
         });

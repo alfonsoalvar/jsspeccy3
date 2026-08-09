@@ -54,10 +54,10 @@ const KEYBOARD_LAYOUT = [
 
     [
         { label: 'SPACE', key: SPECCY.BREAK_SPACE, flex: 5, type: 'action' },
-        { label: '◀', key: caps(SPECCY.FIVE), flex: 1.2, type: 'nav' },
-        { label: '▲', key: caps(SPECCY.SEVEN), flex: 1.2, type: 'nav' },
-        { label: '▼', key: caps(SPECCY.SIX), flex: 1.2, type: 'nav' },
-        { label: '▶', key: caps(SPECCY.EIGHT), flex: 1.2, type: 'nav' },
+        { label: '\u25C0', key: caps(SPECCY.FIVE), flex: 1.2, type: 'nav' },
+        { label: '\u25B2', key: caps(SPECCY.SEVEN), flex: 1.2, type: 'nav' },
+        { label: '\u25BC', key: caps(SPECCY.SIX), flex: 1.2, type: 'nav' },
+        { label: '\u25B6', key: caps(SPECCY.EIGHT), flex: 1.2, type: 'nav' },
     ]
 ];
 

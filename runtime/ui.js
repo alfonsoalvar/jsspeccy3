@@ -321,13 +321,35 @@ export class UIController extends EventEmitter {
 
         /* build UI elements */
         if (this.uiEnabled) {
+            this.dialogOverlay = document.createElement('div');
+            this.dialogOverlay.style.display = 'none';
+            this.dialogOverlay.style.position = 'fixed';
+            this.dialogOverlay.style.top = '0';
+            this.dialogOverlay.style.left = '0';
+            this.dialogOverlay.style.width = '100vw';
+            this.dialogOverlay.style.height = '100vh';
+            this.dialogOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+            this.dialogOverlay.style.backdropFilter = 'blur(4px)';
+            this.dialogOverlay.style.zIndex = '999';
+            container.appendChild(this.dialogOverlay);
+
+            this.dialogOverlay.addEventListener('click', () => {
+                this.hideDialog();
+            });
+
+            this.dialogKeyHandler = (e) => {
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                    this.hideDialog();
+                }
+            };
+
             this.dialog = document.createElement('div');
             this.dialog.style.display = 'none';
-            this.dialog.style.backgroundColor = '#1e1e24';
+            this.dialog.style.backgroundColor = '#18181f';
             this.dialog.style.color = '#f0f0f5';
-            this.dialog.style.border = '1px solid #3a3a48';
-            this.dialog.style.borderRadius = '8px';
-            this.dialog.style.boxShadow = '0 10px 30px rgba(0,0,0,0.6)';
+            this.dialog.style.border = '1px solid #2d2d38';
+            this.dialog.style.borderRadius = '12px';
+            this.dialog.style.boxShadow = '0 16px 40px rgba(0,0,0,0.75)';
             container.appendChild(this.dialog);
             const dialogCloseButton = document.createElement('button');
             dialogCloseButton.innerHTML = closeIcon;
@@ -343,7 +365,8 @@ export class UIController extends EventEmitter {
             this.dialog.appendChild(dialogCloseButton);
             dialogCloseButton.addEventListener('click', () => {
                 this.hideDialog();
-            })
+            });
+
             this.dialogBody = document.createElement('div');
             this.dialogBody.style.clear = 'both';
             this.dialog.appendChild(this.dialogBody);
@@ -615,29 +638,48 @@ export class UIController extends EventEmitter {
         }
     }
     showDialog() {
+        if (this.dialogOverlay) {
+            this.dialogOverlay.style.display = 'block';
+        }
         this.dialog.style.display = 'block';
-        this.dialog.style.position = 'absolute';
-        this.dialog.style.backgroundColor = '#eee';
-        this.dialog.style.zIndex = '100';
-        this.dialog.style.width = '75%';
-        this.dialog.style.height = '80%';
-        this.dialog.style.left = '12%';
-        this.dialog.style.top = '10%';
-        this.dialog.style.overflow = 'scroll';  // TODO: less hacky scrolling that doesn't hide the close button
-        this.dialogBody.style.paddingLeft = '8px';
-        this.dialogBody.style.paddingRight = '8px';
-        this.dialogBody.style.paddingBottom = '8px';
+        this.dialog.style.position = 'fixed';
+        this.dialog.style.backgroundColor = '#18181f';
+        this.dialog.style.color = '#f0f0f5';
+        this.dialog.style.border = '1px solid #2d2d38';
+        this.dialog.style.borderRadius = '12px';
+        this.dialog.style.boxShadow = '0 16px 40px rgba(0, 0, 0, 0.75)';
+        this.dialog.style.zIndex = '1000';
+        this.dialog.style.width = '85%';
+        this.dialog.style.maxWidth = '480px';
+        this.dialog.style.height = 'auto';
+        this.dialog.style.maxHeight = '80vh';
+        this.dialog.style.left = '50%';
+        this.dialog.style.top = '50%';
+        this.dialog.style.transform = 'translate(-50%, -50%)';
+        this.dialog.style.overflowY = 'auto';
+        this.dialogBody.style.padding = '8px 16px 16px 16px';
+
+        document.addEventListener('keydown', this.dialogKeyHandler);
 
         return this.dialogBody;
     }
+
     hideDialog() {
+        if (this.dialogOverlay) {
+            this.dialogOverlay.style.display = 'none';
+        }
         this.dialog.style.display = 'none';
         this.dialogBody.innerHTML = '';
+        document.removeEventListener('keydown', this.dialogKeyHandler);
     }
+
     unload() {
         if (this.uiEnabled) {
+            if (this.dialogOverlay) this.dialogOverlay.remove();
             this.dialog.remove();
+            document.removeEventListener('keydown', this.dialogKeyHandler);
         }
         this.appContainer.remove();
     }
+
 }

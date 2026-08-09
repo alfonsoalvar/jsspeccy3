@@ -275,16 +275,20 @@ export class VirtualKeyboard {
     toggle() {
         this.visible = !this.visible;
         this.elem.style.display = this.visible ? 'block' : 'none';
+        if (this.onToggle) this.onToggle();
         return this.visible;
     }
 
     show() {
         this.visible = true;
         this.elem.style.display = 'block';
+        if (this.onToggle) this.onToggle();
     }
 
     hide() {
         this.visible = false;
         this.elem.style.display = 'none';
+        if (this.onToggle) this.onToggle();
     }
 }
+

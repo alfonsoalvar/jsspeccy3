@@ -375,7 +375,11 @@ export class UIController extends EventEmitter {
 
         if (opts.virtualKeyboard !== false) {
             this.virtualKeyboard = new VirtualKeyboard(this.appContainer, emulator);
+            this.virtualKeyboard.onToggle = () => {
+                this.updateCanvasMaxHeight();
+            };
         }
+
 
         this.startButton = document.createElement('button');
         this.startButton.innerHTML = playIcon;
@@ -527,8 +531,6 @@ export class UIController extends EventEmitter {
         if (factor === 'fit' || factor === 'fit-width') {
             this.canvas.style.width = '100%';
             this.canvas.style.maxWidth = '100%';
-            this.canvas.style.maxHeight = 'calc(100vh - 290px)';
-
             this.canvas.style.height = 'auto';
             this.canvas.style.aspectRatio = '4 / 3';
             this.canvas.style.objectFit = 'contain';
@@ -538,9 +540,15 @@ export class UIController extends EventEmitter {
                 parent.style.width = '100%';
                 parent.style.maxWidth = '100%';
             }
+            const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (window.innerWidth <= 768 && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
             if (this.virtualKeyboard) {
-                this.virtualKeyboard.show();
+                if (isMobileDevice) {
+                    this.virtualKeyboard.show();
+                } else {
+                    this.virtualKeyboard.hide();
+                }
             }
+            this.updateCanvasMaxHeight();
         } else {
 
             const numZoom = parseFloat(this.zoom) || 1;
@@ -562,6 +570,14 @@ export class UIController extends EventEmitter {
 
         this.emit('setZoom', factor);
     }
+
+    updateCanvasMaxHeight() {
+        if (this.zoom === 'fit' || this.zoom === 'fit-width') {
+            const kbVisible = this.virtualKeyboard && this.virtualKeyboard.visible;
+            this.canvas.style.maxHeight = kbVisible ? 'calc(100vh - 290px)' : 'calc(100vh - 70px)';
+        }
+    }
+
 
 
 

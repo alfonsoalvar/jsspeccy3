@@ -398,13 +398,40 @@ export class UIController extends EventEmitter {
             document.exitFullscreen();
             return;  // setZoom will be retriggered once fullscreen has exited
         }
-        const displayWidth = 320 * this.zoom;
-        const displayHeight = 240 * this.zoom;
-        this.canvas.style.width = '' + displayWidth + 'px';
-        this.canvas.style.height = '' + displayHeight + 'px';
-        this.appContainer.style.width = '' + displayWidth + 'px';
+        const parent = this.appContainer.parentElement;
+        if (factor === 'fit' || factor === 'fit-width') {
+            this.canvas.style.width = '100%';
+            this.canvas.style.maxWidth = '100%';
+            this.canvas.style.maxHeight = 'calc(100vh - 290px)';
+
+            this.canvas.style.height = 'auto';
+            this.canvas.style.aspectRatio = '4 / 3';
+            this.canvas.style.objectFit = 'contain';
+            this.appContainer.style.width = '100%';
+            this.appContainer.style.maxWidth = '100%';
+            if (parent) {
+                parent.style.width = '100%';
+                parent.style.maxWidth = '100%';
+            }
+        } else {
+            const numZoom = parseFloat(this.zoom) || 1;
+            const displayWidth = 320 * numZoom;
+            const displayHeight = 240 * numZoom;
+            this.canvas.style.width = displayWidth + 'px';
+            this.canvas.style.height = displayHeight + 'px';
+            this.canvas.style.maxHeight = '';
+            this.canvas.style.aspectRatio = '';
+            this.appContainer.style.width = displayWidth + 'px';
+            this.appContainer.style.maxWidth = displayWidth + 'px';
+            if (parent) {
+                parent.style.maxWidth = displayWidth + 'px';
+            }
+        }
         this.emit('setZoom', factor);
     }
+
+
+
 
     enterFullscreen() {
         this.appContainer.requestFullscreen();

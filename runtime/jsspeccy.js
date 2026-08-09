@@ -492,6 +492,7 @@ window.JSSpeccy = (container, opts) => {
         });
         const displayMenu = ui.menuBar.addMenu('Display');
 
+        const fitWidthItem = displayMenu.addItem('Fit to width', () => {ui.setZoom('fit'); emu.focus();});
         const zoomItemsBySize = {
             1: displayMenu.addItem('100%', () => {ui.setZoom(1); emu.focus();}),
             2: displayMenu.addItem('200%', () => {ui.setZoom(2); emu.focus();}),
@@ -503,11 +504,19 @@ window.JSSpeccy = (container, opts) => {
         const setZoomCheckbox = (factor) => {
             if (factor == 'fullscreen') {
                 fullscreenItem.setBullet();
+                fitWidthItem.unsetBullet();
+                for (let i in zoomItemsBySize) {
+                    zoomItemsBySize[i].unsetBullet();
+                }
+            } else if (factor == 'fit' || factor == 'fit-width') {
+                fullscreenItem.unsetBullet();
+                fitWidthItem.setBullet();
                 for (let i in zoomItemsBySize) {
                     zoomItemsBySize[i].unsetBullet();
                 }
             } else {
                 fullscreenItem.unsetBullet();
+                fitWidthItem.unsetBullet();
                 for (let i in zoomItemsBySize) {
                     if (parseInt(i) == factor) {
                         zoomItemsBySize[i].setBullet();
@@ -517,6 +526,7 @@ window.JSSpeccy = (container, opts) => {
                 }
             }
         }
+
 
         ui.on('setZoom', setZoomCheckbox);
         setZoomCheckbox(ui.zoom);

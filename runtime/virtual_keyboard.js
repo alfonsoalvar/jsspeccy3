@@ -82,8 +82,9 @@ export class VirtualKeyboard {
             styleElem.textContent = `
                 .jsspeccy-virtual-keyboard {
                     width: 100%;
-                    max-width: 640px;
+                    max-width: 100%;
                     margin: 8px auto 0 auto;
+
                     padding: 6px;
                     box-sizing: border-box;
                     background: #1c1c1e;
@@ -106,7 +107,7 @@ export class VirtualKeyboard {
                 .jsspeccy-vk-key {
                     flex: 1;
                     min-width: 0;
-                    height: 38px;
+                    height: 32px;
                     background: #2c2c2e;
                     color: #f2f2f7;
                     border: 1px solid #48484a;
@@ -114,7 +115,7 @@ export class VirtualKeyboard {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 13px;
+                    font-size: 12px;
                     font-weight: bold;
                     cursor: pointer;
                     box-shadow: 0 2px 0 #141414;
@@ -146,21 +147,26 @@ export class VirtualKeyboard {
                     background: #242426;
                     color: #30d158;
                     border-color: #3a3a3c;
-                    font-size: 16px;
+                    font-size: 15px;
                 }
-                @media (max-width: 480px) {
+                @media (max-width: 480px), (max-height: 700px) {
                     .jsspeccy-virtual-keyboard {
-                        padding: 4px;
+                        padding: 3px;
                         margin-top: 4px;
                     }
+                    .jsspeccy-vk-row {
+                        margin-bottom: 3px;
+                        gap: 2px;
+                    }
                     .jsspeccy-vk-key {
-                        height: 34px;
-                        font-size: 11px;
+                        height: 28px;
+                        font-size: 10px;
                     }
                     .jsspeccy-vk-key-nav {
-                        font-size: 14px;
+                        font-size: 13px;
                     }
                 }
+
             `;
             document.head.appendChild(styleElem);
         }

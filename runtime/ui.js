@@ -589,8 +589,8 @@ export class UIController extends EventEmitter {
 
             this.canvas.style.maxWidth = '100%';
             this.canvas.style.maxHeight = '100%';
-            this.canvas.style.width = 'auto';
-            this.canvas.style.height = 'auto';
+            this.canvas.style.width = '100%';
+            this.canvas.style.height = '100%';
             this.canvas.style.aspectRatio = '4 / 3';
             this.canvas.style.objectFit = 'contain';
 

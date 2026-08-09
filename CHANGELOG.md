@@ -1,3 +1,24 @@
+4.0.0 (2026-08-09)
+------------------
+
+* Touch & Mobile Virtual Keyboard:
+  - Add responsive on-screen Virtual Keyboard with custom Spectrum layout (alpha-numeric keys, symbols, enter, delete, space, and shift controls).
+  - Add dynamic lower/upper case lettering on keycaps based on CAPS Shift state.
+  - Implement auto-open logic for Virtual Keyboard in 'Fit to width' mode exclusively on mobile touch devices.
+  - Add onToggle callback system to dynamically trigger layout recalculations.
+* Responsive UI & Toolbar Enhancements:
+  - Add Flexbox 100vh layout for 'Fit to width' mode to eliminate bottom gaps and optimize viewports.
+  - Reposition Virtual Keyboard toggle button to the left toolbar alongside Tape controls.
+  - Convert active machine selector badge into a clean, bold text-only indicator without interactive borders/backgrounds.
+  - Remove redundant Fullscreen button to centralize display management around 'Fit to width'.
+  - Apply CSS icon inversion filters for high-contrast white toolbar icons in dark theme.
+* Header, Footer & About Dialog:
+  - Add top Header and Footer to index.html matching original presentation with fork maintainer attribution (Alfonso Alvar) and original project credits (Matt Westcott).
+  - Automatically hide Header and Footer when entering 'Fit to width' mode to maximize screen space.
+  - Add "About JSSpeccy v4.0.0" dialog in top menu with dark theme, backdrop blur, centered positioning, and ESC/backdrop dismissal handlers.
+  - Ensure menu dropdown items wrap cleanly without line breaks (max-content & nowrap).
+
+
 3.2 (2024-11-23)
 ----------------
 

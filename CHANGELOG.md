@@ -1,3 +1,25 @@
+4.1.0 (2026-08-10)
+------------------
+
+* **Soporte y Teclado ZX Spectrum +2 (Español)**:
+  - Implementación de la distribución, serigrafía y mapa de teclado oficial del ZX Spectrum +2 versión española (tecla Ñ/ñ, símbolos y teclas de función).
+  - Renombrado y configuración del modelo a `Spectrum +2 (Español)`.
+  - Ajuste de estilo y alineación de las filas del teclado virtual táctil, unificación visual de las teclas de cursor y limitación del ancho máximo (`max-width: 720px`) para mantener la proporción de las teclas en monitores anchos.
+
+* **Exportación y Guardado de Archivos**:
+  - Implementación de exportación directa de programas BASIC en formato de cinta `.tzx` desde la memoria RAM del emulador.
+  - Implementación de exportación de snapshots en formato `.z80`.
+  - Integración de cuadros de diálogo (`prompt`) para personalizar el nombre del archivo al exportar tanto `.tzx` como `.z80`.
+
+* **Filtros Visuales y Efecto CRT**:
+  - Adición del efecto CRT en tiempo real (líneas de escaneo / *scanlines*, máscara de subpíxeles RGB y sombra de viñeta cóncava) activado por defecto.
+  - Nueva opción en el menú `Pantalla ➔ Efecto CRT (Scanlines)` con casillero de verificación para alternar el filtro dinámicamente.
+
+* **Traducción e Interfaz en Español**:
+  - Traducción completa de los menús de la interfaz (`Archivo`, `Modelo`, `Pantalla`, `Acerca de`) y ventanas modales al español.
+  - Mejora en el contraste visual de los enlaces en el buscador de juegos de Internet Archive.
+  - Extracción de metadatos globales (`common.js`) para desacoplar index.html.
+
 4.0.0 (2026-08-09)
 ------------------
 

@@ -215,6 +215,9 @@ let halted:bool = false;
 let opcodePrefix:u8 = 0;
 let framebufferIndex = 0;
 let borderColour:u8 = 0;
+let lastPagingFlags:u8 = 0;
+export function getBorderColour():u8 { return borderColour; }
+export function getPagingFlags():u8 { return lastPagingFlags; }
 let speakerState:u8 = 0;
 let selectedAYRegister:u8 = 0;
 let floatingBusValue:u8 = 0xff;
@@ -232,6 +235,7 @@ let loggingEnabled:bool = false;
 let logPtr = 0;
 
 let machineType:u32 = 48;
+export function getMachineType():u32 { return machineType; }
 export function setMachineType(type:u32):void {
     machineType = type;
     if (type == 48 || type == 1212) {
@@ -545,6 +549,7 @@ export function writePort(addr:u16, val:u8):void {
             screenPageIndex = (val & 0x08) ? 7 : 5;
             memoryPageReadMap[0] = (val & 0x10) ? rom1Page : rom0Page;
             pagingLocked = bool(val & 0x20);
+            lastPagingFlags = val;
         }
     } else if ((addr & 0xc002) == 0xc000) {
         selectedAYRegister = val;

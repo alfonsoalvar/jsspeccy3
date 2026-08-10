@@ -4,7 +4,7 @@ import JSZip from 'jszip';
 
 import { DisplayHandler } from './render.js';
 import { UIController } from './ui.js';
-import { parseSNAFile, parseZ80File, parseSZXFile } from './snapshot.js';
+import { parseSNAFile, parseZ80File, parseSZXFile, createZ80Snapshot } from './snapshot.js';
 import { TAPFile, TZXFile } from './tape.js';
 import { StandardKeyboardHandler, RecreatedZXSpectrumHandler } from './keyboard.js';
 import { AudioHandler } from './audio.js';
@@ -124,6 +124,12 @@ class Emulator extends EventEmitter {
                 case 'stoppedTape':
                     this.tapeIsPlaying = false;
                     this.emit('stoppedTape');
+                    break;
+                case 'snapshotData':
+                    if (this.snapshotPromiseResolutions && this.snapshotPromiseResolutions[e.data.id]) {
+                        this.snapshotPromiseResolutions[e.data.id](e.data.snapshot);
+                        delete this.snapshotPromiseResolutions[e.data.id];
+                    }
                     break;
                 default:
                     console.log('message received by host:', e.data);
@@ -256,6 +262,32 @@ class Emulator extends EventEmitter {
         return new Promise((resolve, reject) => {
             this.fileOpenPromiseResolutions[fileID] = resolve;
         });
+    }
+
+    getSnapshot() {
+        const id = this.nextFileOpenID++;
+        this.snapshotPromiseResolutions = this.snapshotPromiseResolutions || {};
+        return new Promise((resolve) => {
+            this.snapshotPromiseResolutions[id] = resolve;
+            this.worker.postMessage({
+                message: 'createSnapshot',
+                id: id
+            });
+        });
+    }
+
+    async saveSnapshot(filename = 'snapshot.z80') {
+        const snap = await this.getSnapshot();
+        const buffer = createZ80Snapshot(snap);
+        const blob = new Blob([buffer], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 
     openTAPFile(data) {
@@ -444,6 +476,10 @@ window.JSSpeccy = (container, opts) => {
         if (!opts.sandbox) {
             fileMenu.addItem('Open...', () => {
                 openFileDialog();
+            });
+            fileMenu.addItem('Save snapshot (.z80)...', () => {
+                const dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                emu.saveSnapshot(`jsspeccy_${dateStr}.z80`);
             });
             fileMenu.addItem('Find games...', () => {
                 openGameBrowser();

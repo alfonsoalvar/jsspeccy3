@@ -250,6 +250,47 @@ onmessage = (e) => {
         case 'setTapeTraps':
             core.setTapeTraps(e.data.value);
             break;
+        case 'createSnapshot':
+            const snap = {
+                model: core.getMachineType ? core.getMachineType() : 128,
+                registers: {
+                    AF: registerPairs[0],
+                    BC: registerPairs[1],
+                    DE: registerPairs[2],
+                    HL: registerPairs[3],
+                    AF_: registerPairs[4],
+                    BC_: registerPairs[5],
+                    DE_: registerPairs[6],
+                    HL_: registerPairs[7],
+                    IX: registerPairs[8],
+                    IY: registerPairs[9],
+                    SP: registerPairs[10],
+                    IR: registerPairs[11],
+                    PC: core.getPC(),
+                    iff1: core.getIFF1(),
+                    iff2: core.getIFF2(),
+                    im: core.getIM(),
+                    halted: core.getHalted(),
+                },
+                ulaState: {
+                    borderColour: core.getBorderColour ? core.getBorderColour() : 0,
+                    pagingFlags: core.getPagingFlags ? core.getPagingFlags() : 0,
+                },
+                memoryPages: {}
+            };
+            const ramPages = (snap.model == 48) ? [0, 2, 5] : [0, 1, 2, 3, 4, 5, 6, 7];
+            ramPages.forEach(p => {
+                const pageBytes = new Uint8Array(0x4000);
+                const srcOffset = core.MACHINE_MEMORY + p * 0x4000;
+                pageBytes.set(memoryData.subarray(srcOffset, srcOffset + 0x4000));
+                snap.memoryPages[p] = pageBytes;
+            });
+            postMessage({
+                message: 'snapshotData',
+                id: e.data.id,
+                snapshot: snap
+            });
+            break;
         default:
             console.log('message received by worker:', e.data);
     }

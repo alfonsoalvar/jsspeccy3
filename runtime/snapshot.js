@@ -319,3 +319,74 @@ export function parseSZXFile(data) {
 
 
 }
+
+export function createZ80Snapshot(snapshot) {
+    const is128K = (snapshot.model === 128 || snapshot.model === 5);
+    const numPages = is128K ? 8 : 3;
+    const headerLen = 86; // 30 (v1) + 2 (len=54) + 54 (v3 header)
+    const pageSize = 3 + 16384;
+    const totalLen = headerLen + (numPages * pageSize);
+
+    const buffer = new ArrayBuffer(totalLen);
+    const view = new DataView(buffer);
+    const bytes = new Uint8Array(buffer);
+
+    const regs = snapshot.registers;
+    const ula = snapshot.ulaState;
+
+    // Header 30 bytes
+    view.setUint16(0, regs.AF, false); // Big endian
+    view.setUint16(2, regs.BC, true);
+    view.setUint16(4, regs.HL, true);
+    view.setUint16(6, 0, true); // PC=0 signals v2/v3 format
+    view.setUint16(8, regs.SP, true);
+    view.setUint8(10, (regs.IR >> 8) & 0xff);
+    view.setUint8(11, regs.IR & 0x7f);
+
+    const r7 = (regs.IR & 0x80) >> 7;
+    const border = (ula.borderColour & 0x07) << 1;
+    view.setUint8(12, r7 | border); // Uncompressed
+
+    view.setUint16(13, regs.DE, true);
+    view.setUint16(15, regs.BC_, true);
+    view.setUint16(17, regs.DE_, true);
+    view.setUint16(19, regs.HL_, true);
+    view.setUint16(21, regs.AF_, false); // Big endian
+    view.setUint16(23, regs.IY, true);
+    view.setUint16(25, regs.IX, true);
+    view.setUint8(27, regs.iff1 ? 1 : 0);
+    view.setUint8(28, regs.iff2 ? 1 : 0);
+    view.setUint8(29, (regs.im & 0x03));
+
+    // Extended Header (54 bytes)
+    view.setUint16(30, 54, true); // Extended header length
+    view.setUint16(32, regs.PC, true);
+    view.setUint8(34, is128K ? 4 : 0); // 0=48k, 4=128k
+    if (is128K) {
+        view.setUint8(35, ula.pagingFlags || 0);
+    }
+
+    let offset = 86;
+
+    // Page mapping to Z80 Page IDs
+    // 128K: RAM 0..7 -> Z80 page IDs 3..10
+    // 48K: RAM 0,2,5 -> Z80 page IDs 5,4,8
+    const pagesToSave = is128K ? [0, 1, 2, 3, 4, 5, 6, 7] : [5, 2, 0];
+    const pageIdMap = is128K
+        ? { 0: 3, 1: 4, 2: 5, 3: 6, 4: 7, 5: 8, 6: 9, 7: 10 }
+        : { 0: 5, 2: 4, 5: 8 };
+
+    pagesToSave.forEach(pageNum => {
+        const z80Id = pageIdMap[pageNum];
+        const pageData = snapshot.memoryPages[pageNum] || new Uint8Array(16384);
+
+        view.setUint16(offset, 0xffff, true); // 0xffff = uncompressed block
+        view.setUint8(offset + 2, z80Id);
+        bytes.set(pageData, offset + 3);
+
+        offset += 3 + 16384;
+    });
+
+    return buffer;
+}
+

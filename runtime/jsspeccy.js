@@ -596,6 +596,21 @@ window.JSSpeccy = (container, opts) => {
             3: displayMenu.addItem('Tamaño triple (3x)', () => {ui.setZoom(3); emu.focus();}),
         };
 
+        const crtMenuItem = displayMenu.addItem('Efecto CRT (Scanlines)', () => {
+            ui.toggleCRTMode();
+            emu.focus();
+        });
+
+        const updateCRTCheckbox = () => {
+            if (ui.crtMode) {
+                crtMenuItem.setCheckbox();
+            } else {
+                crtMenuItem.unsetCheckbox();
+            }
+        };
+        ui.on('setCRTMode', updateCRTCheckbox);
+        updateCRTCheckbox();
+
         const setZoomCheckbox = (factor) => {
             if (factor == 'fit' || factor == 'fit-width') {
                 fitWidthItem.setBullet();

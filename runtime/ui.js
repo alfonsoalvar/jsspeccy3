@@ -399,6 +399,21 @@ export class UIController extends EventEmitter {
         this.canvas.style.objectFit = 'contain';
         this.canvas.style.display = 'block';
 
+        /* CRT Filter Overlay */
+        this.crtMode = opts.crtMode !== false;
+        this.crtOverlay = document.createElement('div');
+        this.crtOverlay.className = 'jsspeccy-crt-overlay';
+        this.crtOverlay.style.position = 'absolute';
+        this.crtOverlay.style.pointerEvents = 'none';
+        this.crtOverlay.style.display = this.crtMode ? 'block' : 'none';
+        this.crtOverlay.style.background = `linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03))`;
+        this.crtOverlay.style.backgroundSize = '100% 3px, 6px 100%';
+        this.crtOverlay.style.boxShadow = 'inset 0 0 25px rgba(0, 0, 0, 0.5)';
+        this.crtOverlay.style.zIndex = '5';
+        this.canvasWrapper.appendChild(this.crtOverlay);
+
+        this.updateCRTOverlayBounds();
+
         if (this.uiEnabled) {
             this.toolbar = new Toolbar(this.appContainer);
         }
@@ -638,11 +653,33 @@ export class UIController extends EventEmitter {
             }
         }
 
+        this.updateCRTOverlayBounds();
         this.emit('setZoom', factor);
     }
 
+    updateCRTOverlayBounds() {
+        if (!this.crtOverlay || !this.canvas) return;
+        this.crtOverlay.style.width = this.canvas.offsetWidth + 'px';
+        this.crtOverlay.style.height = this.canvas.offsetHeight + 'px';
+    }
+
+    setCRTMode(enabled) {
+        this.crtMode = !!enabled;
+        if (this.crtOverlay) {
+            this.crtOverlay.style.display = this.crtMode ? 'block' : 'none';
+            if (this.crtMode) {
+                this.updateCRTOverlayBounds();
+            }
+        }
+        this.emit('setCRTMode', this.crtMode);
+    }
+
+    toggleCRTMode() {
+        this.setCRTMode(!this.crtMode);
+    }
+
     updateCanvasMaxHeight() {
-        // Handled dynamically by flex layout
+        this.updateCRTOverlayBounds();
     }
 
 

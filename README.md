@@ -1,103 +1,104 @@
 # JSSpeccy 3
 
-A ZX Spectrum emulator for the browser
+Un emulador de ZX Spectrum para el navegador con soporte para ZX Spectrum +2 Español, diseño móvil adaptativo y exportación de archivos.
 
-## Features
+## Características
 
-* Emulates the Spectrum 48K, Spectrum 128K and Pentagon machines
-* Handles all Z80 instructions, documented and undocumented
-* Cycle-accurate emulation of scanline / multicolour effects
-* AY and beeper audio
-* Loads SZX, Z80 and SNA snapshots
-* Loads TZX and TAP tape images (via traps only)
-* Loads any of the above files from inside a ZIP file
-* 100% / 200% / 300% and fullscreen display modes
+* Emula los modelos Spectrum 48K, Spectrum 128K (+2 Español) y Pentagon 128
+* Ejecuta todas las instrucciones del Z80 (documentadas y no documentadas)
+* Emulación precisa de efectos de barrido de línea / multicolor (*scanline / multicolour*)
+* Audio AY-3-8912 y *beeper*
+* Carga de volcados de memoria (snapshots) en formatos SZX, Z80 y SNA
+* Carga de imágenes de cinta en formatos TZX y TAP (vía trampas ROM)
+* Exportación de volcados de estado (.z80) y programas BASIC en formato de cinta (.tzx) con personalización de nombres
+* Carga directa de cualquiera de los archivos anteriores desde dentro de un archivo ZIP
+* Teclado táctil virtual adaptativo diseñado con el patrón del ZX Spectrum +2 español
+* Modos de pantalla 100% (1x), 200% (2x), 300% (3x), ajuste a pantalla y pantalla completa
 
-## Implementation notes
+## Notas de implementación
 
-JSSpeccy 3 is a complete rewrite of JSSpeccy to make full use of the web technologies and APIs available as of 2021 for high-performance web apps. The emulation runs in a Web Worker, freeing up the UI thread to handle screen and audio updates, with the emulator core (consisting of the Z80 processor emulation and any auxiliary processes that are likely to interrupt its execution multiple times per frame, such as constructing the video output, reading the keyboard and generating audio) running in WebAssembly, compiled from AssemblyScript (with a custom preprocessor).
+JSSpeccy 3 es una reescritura completa de JSSpeccy para aprovechar al máximo las tecnologías web modernas y APIs de alto rendimiento. La emulación se ejecuta en un *Web Worker*, liberando el hilo de la interfaz de usuario (UI) para gestionar las actualizaciones de pantalla y audio. El núcleo del emulador (que consiste en la emulación del procesador Z80 y procesos auxiliares como la generación de salida de vídeo, lectura del teclado y audio) se ejecuta en WebAssembly, compilado desde AssemblyScript (con un preprocesador personalizado).
 
-## Contributions
+## Contribuciones y Fork
 
-These days, releasing open source code tends to come with an unspoken social contract, so I'd like to set some expectations...
+Este repositorio es una versión mantenida y mejorada del proyecto original por Matt Westcott (Gasman). Incluye soporte nativo para el modelo ZX Spectrum +2 en español, interfaz completamente traducida al español, teclado virtual táctil adaptativo y exportación de programas BASIC en formato .tzx.
 
-This is a personal project, created for my own enjoyment, and my act of publishing the code does not come with any commitment to provide technical support or assistance. I'm always happy to hear of other people getting similar enjoyment from hacking on the code, and pull requests are welcome, but I can't promise to review them or shepherd them into an "official" release on any sort of timescale. Managing external contributions is often the point at which a "fun" project stops being fun. If there's a feature you need in the project - feel free to fork.
+## Integración (Embedding)
 
-## Embedding
+JSSpeccy 3 está diseñado pensando en su integración en sitios web. Para incluirlo en tu propia página, descarga el contenido compilado y copia la carpeta `jsspeccy` en un directorio accesible por tu servidor web. Asegúrate de mantener los archivos `.js`, `.wasm` y las subcarpetas en la misma ubicación relativa a `jsspeccy.js`.
 
-JSSpeccy 3 is designed with embedding in mind. To include it in your own site, download [a release archive](https://github.com/gasman/jsspeccy3/releases) and copy the contents of the `jsspeccy` folder somewhere web-accessible. Be sure to keep the .js and .wasm files and the subdirectories in the same place relative to jsspeccy.js.
-
-In the `<head>` of your HTML page, include the tag
-
-```html
-    <script src="/path/to/jsspeccy.js"></script>
-```
-
-replacing `/path/to/jsspeccy.js` with (yes!) the path to jsspeccy.js. At the point in the page where you want the emulator to show, place the code:
+En la etiqueta `<head>` de tu página HTML, incluye:
 
 ```html
-    <div id="jsspeccy"></div>
-    <script>JSSpeccy(document.getElementById('jsspeccy'))</script>
+<script src="/ruta/a/jsspeccy.js"></script>
 ```
 
-If you're suitably confident with JavaScript, you can put the call to `JSSpeccy` anywhere else that runs on page load, or in response to any user action.
-
-You can also pass configuration options as a second argument to `JSSpeccy`:
+Sustituyendo `/ruta/a/jsspeccy.js` por la ruta real hacia `jsspeccy.js`. En el lugar de la página donde desees mostrar el emulador, añade el siguiente código:
 
 ```html
-    <script>JSSpeccy(document.getElementById('jsspeccy'), {zoom: 2, machine: 48})</script>
+<div id="jsspeccy"></div>
+<script>JSSpeccy(document.getElementById('jsspeccy'))</script>
 ```
 
-The available configuration options are:
-
-* `autoStart`: if true, the emulator will start immediately with no need to press the play button. Bear in mind that browser policies usually don't allow enabling audio without a user interaction, so if you enable this option (and don't put the `JSSpeccy` call behind an onclick event or similar), expect things to be silent.
-* `autoLoadTapes`: if true, any tape files opened (either manually or through the openUrl option) will be loaded automatically without the user having to enter LOAD "" or select the Tape Loader menu option.
-* `tapeAutoLoadMode`: specifies the mode that the machine should be set to before auto-loading tape files. When set to 'default' (the default), this is equivalent to selecting the Tape Loader menu option on machines that support it; when set to 'usr0', this is equivalent to entering 'usr0' in 128 BASIC then LOAD "" from the resulting 48K BASIC prompt (which leaves 128K memory paging available without the extra housekeeping of the 128K ROM - this mode is commonly used for launching demos).
-* `machine`: specifies the machine to emulate. Can be `48` (for a 48K Spectrum), `128` (for a 128K Spectrum), or `5` (for a Pentagon 128).
-* `openUrl`: specifies a URL, or an array of URLs, to a file (or files) to load on startup, in any supported snapshot, tape or archive format. Standard browser security restrictions apply for loading remote files: if the URL being loaded is not on the same domain as the calling page, it must serve [CORS HTTP headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) to be loadable.
-* `zoom`: specifies the size of the emulator window; 1 for 100% size (one Spectrum pixel per screen pixel), 2 for 200% size and so on.
-* `sandbox`: if true, all UI options for opening a new file are disabled - useful if you're showcasing a specific bit of Spectrum software on your page.
-* `tapeTrapsEnabled`: if true (the default), the emulator will recognise when the tape loading routine in the ROM is called, and load tape files instantly instead.
-* `keyboardEnabled`: True by default; if false, the emulator will not respond to keypresses.
-* `uiEnabled`: True by default; if false, the menu bar and toolbar will not be shown.
-* `keyboardMap`: if this is set to the value `"recreated"`, the emulator will accept keypresses in the encoded format emitted by the [Recreated ZX Spectrum](https://recreatedzxspectrum.com/) keyboard in "game mode". If it is unset or set to any other value, the emulator will accept keypresses as normal.
-
-For additional JavaScript hackery, the return value of the JSSpeccy function call is an object exposing a number of functions for controlling the running emulator:
+También puedes pasar opciones de configuración como un segundo argumento a `JSSpeccy`:
 
 ```html
-    <script>
-        let emu = JSSpeccy(document.getElementById('jsspeccy'));
-        emu.openFileDialog();
-    </script>
+<script>JSSpeccy(document.getElementById('jsspeccy'), {zoom: 2, machine: 128})</script>
 ```
 
-* `emu.setZoom(zoomLevel)` - set the zoom level of the emulator
-* `emu.enterFullscreen()` - activate full-screen mode
-* `emu.exitFullscreen()` - exit full-screen mode
-* `emu.toggleFullscreen()` - enter or exit full-screen mode
-* `emu.setMachine(machine)` - set the emulated machine type
-* `emu.openFileDialog()` - open the file chooser dialog
-* `emu.openUrl(url)` - open the file at the given URL
-* `emu.loadSnapshotFromStruct(snapshot)` - load a snapshot from the given data structure; the data format is currently undocumented but runtime/snapshot.js should give you a decent idea of it...
-* `emu.onReady(callback)` - call the given callback once the emulator is fully initialised
-* `emu.exit()` - immediately stop the emulator and remove it from the document
+### Opciones de configuración disponibles:
 
-## Troubleshooting
+* `autoStart`: Si es `true`, el emulador se iniciará inmediatamente sin necesidad de pulsar el botón de reproducción. Ten en cuenta que las políticas de la mayoría de los navegadores no permiten reproducir audio sin interacción previa del usuario.
+* `autoLoadTapes`: Si es `true`, cualquier archivo de cinta cargado se ejecutará automáticamente sin necesidad de teclear `LOAD ""` o seleccionar la opción Tape Loader.
+* `tapeAutoLoadMode`: Especifica el modo en que debe configurarse la máquina antes de autocargar cintas: `'default'` (por defecto) o `'usr0'` (modo 48K BASIC en modelos 128K).
+* `machine`: Especifica la máquina a emular. Puede ser `48` (para Spectrum 48K), `128` (para Spectrum 128K +2 Español) o `5` (para Pentagon 128).
+* `openUrl`: Especifica una URL (o lista de URLs) a archivos de cinta, snapshot o archivos comprimidos para cargar al inicio.
+* `zoom`: Especifica el tamaño de la ventana del emulador: `1` para 100%, `2` para 200%, `'fit'` para ajustar al ancho del navegador, etc.
+* `sandbox`: Si es `true`, deshabilita las opciones del menú UI para abrir archivos locales.
+* `tapeTrapsEnabled`: Si es `true` (por defecto), intercepta las rutinas de carga de la ROM para realizar cargas instantáneas de cinta.
+* `keyboardEnabled`: `true` por defecto; si es `false`, el emulador no responderá a las entradas del teclado.
+* `uiEnabled`: `true` por defecto; si es `false`, la barra de menú superior y la barra de herramientas inferior no se mostrarán.
+* `keyboardMap`: Si se establece en `"recreated"`, el emulador aceptará los códigos emitidos por el teclado [Recreated ZX Spectrum](https://recreatedzxspectrum.com/).
 
-If the emulator does not start, open the browser's developer console (on Chrome: View -> Developer -> JavaScript Console; on Firefox: Tools -> Browser Tools -> Browser Console) and check for any error messages.
+### Control de la API de JavaScript
 
-If you see an error such as
+El valor devuelto por la función `JSSpeccy` es un objeto que expone funciones para controlar la ejecución del emulador:
+
+```html
+<script>
+    let emu = JSSpeccy(document.getElementById('jsspeccy'));
+    emu.openFileDialog();
+</script>
+```
+
+* `emu.setZoom(zoomLevel)`: Cambia el nivel de zoom o ajuste de pantalla.
+* `emu.enterFullscreen()`: Activa el modo de pantalla completa.
+* `emu.exitFullscreen()`: Sale del modo de pantalla completa.
+* `emu.toggleFullscreen()`: Alterna la pantalla completa.
+* `emu.setMachine(machine)`: Cambia el modelo emulado (48, 128, 5).
+* `emu.openFileDialog()`: Abre el selector de archivos local.
+* `emu.openUrl(url)`: Carga un archivo desde una URL especificada.
+* `emu.saveSnapshot(filename)`: Exporta un archivo snapshot .z80.
+* `emu.saveBasicTZX(filename)`: Exporta el programa BASIC actual en memoria a un archivo .tzx.
+* `emu.onReady(callback)`: Ejecuta una función callback una vez el emulador esté totalmente inicializado.
+* `emu.exit()`: Detiene el emulador y lo remueve del documento DOM.
+
+## Solución de problemas
+
+Si el emulador no inicia, abre la consola de desarrollador de tu navegador (En Chrome: Ver -> Opciones para desarrolladores -> Consola JavaScript; en Firefox: Herramientas -> Herramientas del navegador -> Consola del navegador) y comprueba los mensajes de error.
+
+Si observas un error como:
 
 ```
 TypeError: WebAssembly: Response has unsupported MIME type 'application/octet-stream' expected 'application/wasm'
 ```
 
-then you need to configure the web server to serve .wasm files with the correct content type header. If you run your own Apache or Nginx server, follow these [instructions for editing /etc/mime.types](https://gist.github.com/WesThorburn/62ea13952749d6563ce2fb15b45f1ba8). If your hosting provider supports `.htaccess` files, upload one containing the line:
+Debes configurar tu servidor web para servir archivos `.wasm` con el encabezado de tipo de contenido correcto. En servidores Apache o Nginx, asegúrate de añadir en tu archivo `.htaccess`:
 
 ```
 AddType application/wasm wasm
 ```
 
-## Licence
+## Licencia
 
-JSSpeccy 3 is licensed under the GPL version 3 - see COPYING.
+JSSpeccy 3 está licenciado bajo la Licencia Pública General GNU versión 3 (GPL v3) - consulta el archivo COPYING para más detalles.

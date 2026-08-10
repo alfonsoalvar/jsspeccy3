@@ -490,12 +490,12 @@ window.JSSpeccy = (container, opts) => {
     }
 
     if (uiEnabled) {
-        const fileMenu = ui.menuBar.addMenu('File');
+        const fileMenu = ui.menuBar.addMenu('Archivo');
         if (!opts.sandbox) {
-            fileMenu.addItem('Open...', () => {
+            fileMenu.addItem('Abrir archivo...', () => {
                 openFileDialog();
             });
-            fileMenu.addItem('Save snapshot (.z80)...', () => {
+            fileMenu.addItem('Guardar estado (.z80)...', () => {
                 const dateStr = new Date().toISOString().slice(0, 10);
                 const defaultName = `jsspeccy_${dateStr}`;
                 const inputName = prompt('Nombre del archivo snapshot .z80:', defaultName);
@@ -505,7 +505,7 @@ window.JSSpeccy = (container, opts) => {
                     emu.saveSnapshot(finalName);
                 }
             });
-            fileMenu.addItem('Save BASIC program (.tzx)...', () => {
+            fileMenu.addItem('Guardar programa BASIC (.tzx)...', () => {
                 const defaultName = 'MI_PROG';
                 const inputName = prompt('Nombre del programa BASIC (máx. 10 caracteres):', defaultName);
                 if (inputName !== null) {
@@ -513,10 +513,10 @@ window.JSSpeccy = (container, opts) => {
                     emu.saveBasicTZX(`${cleanName}.tzx`);
                 }
             });
-            fileMenu.addItem('Find games...', () => {
+            fileMenu.addItem('Buscar juegos...', () => {
                 openGameBrowser();
             });
-            const autoLoadTapesMenuItem = fileMenu.addItem('Auto-load tapes', () => {
+            const autoLoadTapesMenuItem = fileMenu.addItem('Autocargar cintas', () => {
                 emu.setAutoLoadTapes(!emu.autoLoadTapes);
                 emu.focus();
             });
@@ -531,7 +531,7 @@ window.JSSpeccy = (container, opts) => {
             updateAutoLoadTapesCheckbox();
         }
 
-        const tapeTrapsMenuItem = fileMenu.addItem('Instant tape loading', () => {
+        const tapeTrapsMenuItem = fileMenu.addItem('Carga rápida de cintas', () => {
             emu.setTapeTraps(!emu.tapeTrapsEnabled);
             emu.focus();
         });
@@ -546,12 +546,12 @@ window.JSSpeccy = (container, opts) => {
         emu.on('setTapeTraps', updateTapeTrapsCheckbox);
         updateTapeTrapsCheckbox();
 
-        const machineMenu = ui.menuBar.addMenu('Machine');
+        const machineMenu = ui.menuBar.addMenu('Modelo');
         const machine48Item = machineMenu.addItem('Spectrum 48K', () => {
             emu.setMachine(48);
             emu.focus();
         });
-        const machine128Item = machineMenu.addItem('Spectrum 128K +2 ES', () => {
+        const machine128Item = machineMenu.addItem('Spectrum +2 (Español)', () => {
             emu.setMachine(128);
             emu.focus();
         });
@@ -562,7 +562,7 @@ window.JSSpeccy = (container, opts) => {
 
         const machineNames = {
             48: 'Spectrum 48K',
-            128: 'Spectrum 128K +2 ES',
+            128: 'Spectrum +2 ES',
             5: 'Pentagon 128'
         };
         const updateMachineUI = (type) => {
@@ -587,13 +587,13 @@ window.JSSpeccy = (container, opts) => {
         emu.on('setMachine', updateMachineUI);
         updateMachineUI(emu.machineType || 48);
 
-        const displayMenu = ui.menuBar.addMenu('Display');
+        const displayMenu = ui.menuBar.addMenu('Pantalla');
 
-        const fitWidthItem = displayMenu.addItem('Fit to width', () => {ui.setZoom('fit'); emu.focus();});
+        const fitWidthItem = displayMenu.addItem('Ajustar a pantalla', () => {ui.setZoom('fit'); emu.focus();});
         const zoomItemsBySize = {
-            1: displayMenu.addItem('100%', () => {ui.setZoom(1); emu.focus();}),
-            2: displayMenu.addItem('200%', () => {ui.setZoom(2); emu.focus();}),
-            3: displayMenu.addItem('300%', () => {ui.setZoom(3); emu.focus();}),
+            1: displayMenu.addItem('Tamaño normal (1x)', () => {ui.setZoom(1); emu.focus();}),
+            2: displayMenu.addItem('Tamaño doble (2x)', () => {ui.setZoom(2); emu.focus();}),
+            3: displayMenu.addItem('Tamaño triple (3x)', () => {ui.setZoom(3); emu.focus();}),
         };
 
         const setZoomCheckbox = (factor) => {
@@ -614,12 +614,10 @@ window.JSSpeccy = (container, opts) => {
             }
         };
 
-
-
-        const aboutMenu = ui.menuBar.addMenu('About');
-        aboutMenu.addItem(`About ${APP_TITLE}`, () => {
+        const aboutMenu = ui.menuBar.addMenu('Acerca de');
+        aboutMenu.addItem(`Acerca de ${APP_TITLE}`, () => {
             openAboutDialog();
-        });
+        });;
 
 
 
@@ -714,21 +712,21 @@ window.JSSpeccy = (container, opts) => {
         const body = ui.showDialog();
         body.innerHTML = `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 16px 20px; color: #e0e0e0; line-height: 1.6;">
-                <h2 style="margin-top: 0; color: #ffffff; font-size: 20px; font-weight: 700; border-bottom: 1px solid #3a3a48; padding-bottom: 8px;">About ${APP_TITLE}</h2>
+                <h2 style="margin-top: 0; color: #ffffff; font-size: 20px; font-weight: 700; border-bottom: 1px solid #3a3a48; padding-bottom: 8px;">Acerca de ${APP_TITLE}</h2>
                 <p style="margin: 12px 0; font-size: 14px;">
                     <strong>${APP_TITLE}</strong> ${APP_ABOUT_TEXT}
                 </p>
                 <div style="background-color: #262632; border: 1px solid #3a3a48; border-radius: 8px; padding: 12px 16px; margin: 16px 0;">
-                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Fork Author & Maintainer (v${APP_VERSION})</p>
+                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Autor y Mantenimiento (v${APP_VERSION})</p>
                     <p style="margin: 0; font-size: 15px; font-weight: 600; color: #ffffff;">${APP_AUTHOR}</p>
                     <p style="margin: 2px 0 0 0; font-size: 13px;">
                         <a href="mailto:${APP_AUTHOR_EMAIL}" style="color: #60a5fa; text-decoration: none;">${APP_AUTHOR_EMAIL}</a>
                     </p>
                 </div>
                 <div style="background-color: #262632; border: 1px solid #3a3a48; border-radius: 8px; padding: 12px 16px; margin: 16px 0;">
-                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Original Base Project</p>
+                    <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Proyecto Base Original</p>
                     <p style="margin: 0; font-size: 14px; color: #d0d0d0;">
-                        Originally created as ${ORIGINAL_PROJECT} by ${ORIGINAL_AUTHOR}.
+                        Creado originalmente como ${ORIGINAL_PROJECT} por ${ORIGINAL_AUTHOR}.
                     </p>
                     <p style="margin: 4px 0 0 0; font-size: 13px;">
                         <a href="https://github.com/gasman/jsspeccy3" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">github.com/gasman/jsspeccy3</a>
@@ -744,10 +742,10 @@ window.JSSpeccy = (container, opts) => {
         emu.pause();
         const body = ui.showDialog();
         body.innerHTML = `
-            <label>Find games</label>
-            <form>
-                <input type="search">
-                <button type="submit">Search</button>
+            <label style="font-weight: bold; font-size: 16px;">Buscar juegos</label>
+            <form style="margin-top: 10px; display: flex; gap: 8px;">
+                <input type="search" placeholder="Escribe el nombre del juego..." style="flex: 1; padding: 6px 10px; border-radius: 4px; border: 1px solid #3a3a48; background: #262632; color: #ffffff;">
+                <button type="submit" style="padding: 6px 14px; background: #007aff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">Buscar</button>
             </form>
             <div class="results">
             </div>
@@ -759,7 +757,7 @@ window.JSSpeccy = (container, opts) => {
 
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            searchButton.innerText = 'Searching...';
+            searchButton.innerText = 'Buscando...';
             const searchTerm = input.value.replace(/[^\w\s\-\']/, '');
 
             const encodeParam = (key, val) => {
@@ -777,10 +775,10 @@ window.JSSpeccy = (container, opts) => {
                 + '&' + encodeParam('output', 'json')
             )
             fetch(searchUrl).then(response => {
-                searchButton.innerText = 'Search';
+                searchButton.innerText = 'Buscar';
                 return response.json();
             }).then(data => {
-                resultsContainer.innerHTML = '<ul style="list-style-type: none; padding-left: 0; margin-top: 12px;"></ul><p style="font-size: 12px; color: #a0a0b0; margin-top: 16px;">- powered by <a href="https://archive.org/" target="_blank" style="color: #60a5fa; text-decoration: none;">Internet Archive</a></p>';
+                resultsContainer.innerHTML = '<ul style="list-style-type: none; padding-left: 0; margin-top: 12px;"></ul><p style="font-size: 12px; color: #a0a0b0; margin-top: 16px;">- con tecnología de <a href="https://archive.org/" target="_blank" style="color: #60a5fa; text-decoration: none;">Internet Archive</a></p>';
                 const ul = resultsContainer.querySelector('ul');
                 const results = data.response.docs;
                 results.forEach(result => {

@@ -59,12 +59,11 @@ const KEYBOARD_LAYOUT_PLUS2 = [
         { label: 'SIMB', key: SPECCY.SYMBOL_SHIFT, flex: 1.2, type: 'shift', isSym: true },
         { label: ';', key: sym(SPECCY.O), type: 'action' },
         { label: '"', key: sym(SPECCY.P), type: 'action' },
-        { label: '<', key: sym(SPECCY.R), type: 'action' },
-        { label: '>', key: sym(SPECCY.T), type: 'action' },
         { label: '\u25C0', key: caps(SPECCY.FIVE), flex: 1.1, type: 'nav' },
-        { label: '\u25BC', key: caps(SPECCY.SIX), flex: 1.1, type: 'nav' },
-        { label: '\u25B2', key: caps(SPECCY.SEVEN), flex: 1.1, type: 'nav' },
         { label: '\u25B6', key: caps(SPECCY.EIGHT), flex: 1.1, type: 'nav' },
+        { label: 'ESPACIO', key: SPECCY.BREAK_SPACE, flex: 3.5, type: 'action' },
+        { label: '\u25B2', key: caps(SPECCY.SEVEN), flex: 1.1, type: 'nav' },
+        { label: '\u25BC', key: caps(SPECCY.SIX), flex: 1.1, type: 'nav' },
         { label: ',', key: sym(SPECCY.N), type: 'action' },
         { label: 'SIMB', key: SPECCY.SYMBOL_SHIFT, flex: 1.2, type: 'shift', isSym: true },
     ]
@@ -165,10 +164,10 @@ export class VirtualKeyboard {
                     letter-spacing: -0.2px;
                 }
                 .jsspeccy-vk-key-nav {
-                    background: #22222a;
-                    color: #4ade80;
-                    border-color: #383846;
-                    font-size: 14px;
+                    background: #2a2a32;
+                    color: #f2f2f7;
+                    border-color: #42424e;
+                    font-size: 13px;
                 }
                 .jsspeccy-vk-sublabel {
                     position: absolute;

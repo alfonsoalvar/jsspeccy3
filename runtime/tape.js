@@ -583,3 +583,123 @@ export class TZXFile {
         }
     }
 };
+
+export function createBasicTAPBlocks(snapshot, programName = 'PROGRAM') {
+    // Determine RAM bank offsets
+    const page5 = snapshot.memoryPages[5] || new Uint8Array(16384);
+    const page2 = snapshot.memoryPages[2] || new Uint8Array(16384);
+
+    let page0;
+    if (snapshot.model === 128 || snapshot.model === 5) {
+        const pageNum = (snapshot.ulaState && snapshot.ulaState.pagingFlags) ? (snapshot.ulaState.pagingFlags & 7) : 0;
+        page0 = snapshot.memoryPages[pageNum] || new Uint8Array(16384);
+    } else {
+        page0 = snapshot.memoryPages[0] || new Uint8Array(16384);
+    }
+
+    const readByte = (addr) => {
+        if (addr >= 0x4000 && addr < 0x8000) return page5[addr - 0x4000];
+        if (addr >= 0x8000 && addr < 0xc000) return page2[addr - 0x8000];
+        if (addr >= 0xc000 && addr <= 0xffff) return page0[addr - 0xc000];
+        return 0;
+    };
+
+    const readWord = (addr) => {
+        return readByte(addr) | (readByte(addr + 1) << 8);
+    };
+
+    // System variables for BASIC
+    const PROG = readWord(0x5C53);
+    const VARS = readWord(0x5C4B);
+    const E_LINE = readWord(0x5C59);
+
+    if (PROG < 0x5C00 || VARS < PROG || VARS > 0xFFFF) {
+        throw new Error('No valid BASIC program found in memory');
+    }
+
+    const programLength = VARS - PROG;
+    if (programLength <= 0) {
+        throw new Error('BASIC program is empty');
+    }
+
+    const programData = new Uint8Array(programLength);
+    for (let i = 0; i < programLength; i++) {
+        programData[i] = readByte(PROG + i);
+    }
+
+    // Prepare Header block (19 bytes)
+    const header = new Uint8Array(19);
+    header[0] = 0x00; // Flag: Header block
+    header[1] = 0x00; // Type: Program (BASIC)
+
+    // Name (padded to 10 chars)
+    const nameStr = (programName.toUpperCase() + '          ').slice(0, 10);
+    for (let i = 0; i < 10; i++) {
+        header[2 + i] = nameStr.charCodeAt(i);
+    }
+
+    // Data length (program length)
+    header[12] = programLength & 0xff;
+    header[13] = (programLength >> 8) & 0xff;
+
+    // Auto-start line (or 0x8000 if none)
+    header[14] = 0x00;
+    header[15] = 0x80;
+
+    // Offset to program variables
+    header[16] = programLength & 0xff;
+    header[17] = (programLength >> 8) & 0xff;
+
+    // Checksum for header
+    let headerChk = 0;
+    for (let i = 0; i < 18; i++) {
+        headerChk ^= header[i];
+    }
+    header[18] = headerChk;
+
+    // Prepare Data block (2 + programLength bytes)
+    const dataBlock = new Uint8Array(2 + programLength);
+    dataBlock[0] = 0xff; // Flag: Data block
+    dataBlock.set(programData, 1);
+
+    let dataChk = 0;
+    for (let i = 0; i < programLength + 1; i++) {
+        dataChk ^= dataBlock[i];
+    }
+    dataBlock[1 + programLength] = dataChk;
+
+    return { header, dataBlock };
+}
+
+export function exportBasicProgramToTZX(snapshot, programName = 'PROGRAM') {
+    const { header, dataBlock } = createBasicTAPBlocks(snapshot, programName);
+
+    // TZX Header: "ZXTape!\x1A", Major version 1, Minor version 20
+    const tzxSig = new Uint8Array([0x5A, 0x58, 0x54, 0x61, 0x70, 0x65, 0x21, 0x1A, 0x01, 0x14]);
+
+    // Standard Speed Data Block (ID 0x10) for Header (Pause 1000ms)
+    // ID (1) + Pause (2) + Len (2) + Header (19) = 24 bytes
+    const block1 = new Uint8Array(5 + 19);
+    block1[0] = 0x10; // Block ID
+    block1[1] = 0xE8; block1[2] = 0x03; // Pause 1000 ms
+    block1[3] = 19; block1[4] = 0; // Data length 19
+    block1.set(header, 5);
+
+    // Standard Speed Data Block (ID 0x10) for Data Block (Pause 1000ms)
+    const dataLen = dataBlock.length;
+    const block2 = new Uint8Array(5 + dataLen);
+    block2[0] = 0x10; // Block ID
+    block2[1] = 0xE8; block2[2] = 0x03; // Pause 1000 ms
+    block2[3] = dataLen & 0xff; block2[4] = (dataLen >> 8) & 0xff;
+    block2.set(dataBlock, 5);
+
+    // Combine TZX file
+    const totalSize = tzxSig.length + block1.length + block2.length;
+    const tzxFile = new Uint8Array(totalSize);
+    tzxFile.set(tzxSig, 0);
+    tzxFile.set(block1, tzxSig.length);
+    tzxFile.set(block2, tzxSig.length + block1.length);
+
+    return tzxFile.buffer;
+}
+

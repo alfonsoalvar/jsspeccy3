@@ -5,7 +5,7 @@ import JSZip from 'jszip';
 import { DisplayHandler } from './render.js';
 import { UIController } from './ui.js';
 import { parseSNAFile, parseZ80File, parseSZXFile, createZ80Snapshot } from './snapshot.js';
-import { TAPFile, TZXFile } from './tape.js';
+import { TAPFile, TZXFile, exportBasicProgramToTZX } from './tape.js';
 import { StandardKeyboardHandler, RecreatedZXSpectrumHandler } from './keyboard.js';
 import { AudioHandler } from './audio.js';
 import { APP_NAME, APP_VERSION, APP_TITLE, APP_DESCRIPTION, APP_ABOUT_TEXT, APP_AUTHOR, APP_AUTHOR_EMAIL, ORIGINAL_AUTHOR, ORIGINAL_PROJECT } from './common.js';
@@ -290,6 +290,24 @@ class Emulator extends EventEmitter {
         URL.revokeObjectURL(url);
     }
 
+    async saveBasicTZX(filename = 'program.tzx') {
+        try {
+            const snap = await this.getSnapshot();
+            const buffer = exportBasicProgramToTZX(snap, filename.replace(/\.tzx$/i, ''));
+            const blob = new Blob([buffer], { type: 'application/x-tzx' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            alert('Error saving BASIC program: ' + err.message);
+        }
+    }
+
     openTAPFile(data) {
         const fileID = this.nextFileOpenID++;
         this.worker.postMessage({
@@ -480,6 +498,10 @@ window.JSSpeccy = (container, opts) => {
             fileMenu.addItem('Save snapshot (.z80)...', () => {
                 const dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
                 emu.saveSnapshot(`jsspeccy_${dateStr}.z80`);
+            });
+            fileMenu.addItem('Save BASIC program (.tzx)...', () => {
+                const dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                emu.saveBasicTZX(`program_${dateStr}.tzx`);
             });
             fileMenu.addItem('Find games...', () => {
                 openGameBrowser();

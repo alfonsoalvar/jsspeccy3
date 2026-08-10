@@ -496,8 +496,14 @@ window.JSSpeccy = (container, opts) => {
                 openFileDialog();
             });
             fileMenu.addItem('Save snapshot (.z80)...', () => {
-                const dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-                emu.saveSnapshot(`jsspeccy_${dateStr}.z80`);
+                const dateStr = new Date().toISOString().slice(0, 10);
+                const defaultName = `jsspeccy_${dateStr}`;
+                const inputName = prompt('Nombre del archivo snapshot .z80:', defaultName);
+                if (inputName !== null) {
+                    const cleanName = inputName.trim() || defaultName;
+                    const finalName = cleanName.toLowerCase().endsWith('.z80') ? cleanName : `${cleanName}.z80`;
+                    emu.saveSnapshot(finalName);
+                }
             });
             fileMenu.addItem('Save BASIC program (.tzx)...', () => {
                 const defaultName = 'MI_PROG';

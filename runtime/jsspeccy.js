@@ -500,8 +500,12 @@ window.JSSpeccy = (container, opts) => {
                 emu.saveSnapshot(`jsspeccy_${dateStr}.z80`);
             });
             fileMenu.addItem('Save BASIC program (.tzx)...', () => {
-                const dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-                emu.saveBasicTZX(`program_${dateStr}.tzx`);
+                const defaultName = 'MI_PROG';
+                const inputName = prompt('Nombre del programa BASIC (máx. 10 caracteres):', defaultName);
+                if (inputName !== null) {
+                    const cleanName = inputName.trim() || defaultName;
+                    emu.saveBasicTZX(`${cleanName}.tzx`);
+                }
             });
             fileMenu.addItem('Find games...', () => {
                 openGameBrowser();

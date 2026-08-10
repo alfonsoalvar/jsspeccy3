@@ -483,7 +483,7 @@ window.JSSpeccy = (container, opts) => {
             emu.setMachine(48);
             emu.focus();
         });
-        const machine128Item = machineMenu.addItem('Spectrum 128K', () => {
+        const machine128Item = machineMenu.addItem('Spectrum 128K +2 ES', () => {
             emu.setMachine(128);
             emu.focus();
         });
@@ -494,7 +494,7 @@ window.JSSpeccy = (container, opts) => {
 
         const machineNames = {
             48: 'Spectrum 48K',
-            128: 'Spectrum 128K',
+            128: 'Spectrum 128K +2 ES',
             5: 'Pentagon 128'
         };
         const updateMachineUI = (type) => {

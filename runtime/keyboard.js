@@ -127,6 +127,8 @@ const KEY_CODES = {
     '*': sym(SPECCY.B),
     '@': sym(SPECCY.TWO),
     '#': sym(SPECCY.THREE),
+    'ñ': caps(sym(SPECCY.S)),
+    'Ñ': sym(SPECCY.S),
 };
 KEY_CODES[String.fromCharCode(0x2264)] = sym(SPECCY.Q); // LESS_THAN_EQUAL symbol (≤)
 KEY_CODES[String.fromCharCode(0x2265)] = sym(SPECCY.E); // GREATER_THAN_EQUAL symbol (≥)
@@ -192,31 +194,39 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
         this.seenKeyCodes = {};
 
         this.keydownHandler = (evt) => {
-            let keyInfo = KEY_CODES[evt.keyCode];
+            let keyInfo = KEY_CODES[evt.key];
+            if (!keyInfo && evt.keyCode !== 192) {
+                keyInfo = KEY_CODES[evt.keyCode];
+            } else if (!keyInfo && evt.keyCode === 192) {
+                keyInfo = SPECCY.CAPS_SHIFT;
+            }
+
             if (keyInfo) {
-                this.keyDown(keyInfo);
-            } else {
-                keyInfo = KEY_CODES[evt.key];
-                if (keyInfo) {
-                    const lastKeyInfo = this.seenKeyCodes[evt.keyCode];
-                    if (lastKeyInfo && lastKeyInfo !== keyInfo) {
-                        this.keyUp(lastKeyInfo);
-                    }
-                    this.seenKeyCodes[evt.keyCode] = keyInfo;
-                    this.keyDown(keyInfo);
+                const lastKeyInfo = this.seenKeyCodes[evt.keyCode || evt.key];
+                if (lastKeyInfo && lastKeyInfo !== keyInfo) {
+                    this.keyUp(lastKeyInfo);
                 }
+                this.seenKeyCodes[evt.keyCode || evt.key] = keyInfo;
+                this.keyDown(keyInfo);
             }
             if (!evt.metaKey) evt.preventDefault();
         };
 
         this.keyupHandler = (evt) => {
-            const keyInfo = KEY_CODES[evt.keyCode];
+            let keyInfo = KEY_CODES[evt.key];
+            if (!keyInfo && evt.keyCode !== 192) {
+                keyInfo = KEY_CODES[evt.keyCode];
+            } else if (!keyInfo && evt.keyCode === 192) {
+                keyInfo = SPECCY.CAPS_SHIFT;
+            }
+
             if (keyInfo) {
+                this.seenKeyCodes[evt.keyCode || evt.key] = null;
                 this.keyUp(keyInfo);
             } else {
-                const lastKeyInfo = this.seenKeyCodes[evt.keyCode];
+                const lastKeyInfo = this.seenKeyCodes[evt.keyCode || evt.key];
                 if (lastKeyInfo) {
-                    this.seenKeyCodes[evt.keyCode] = null;
+                    this.seenKeyCodes[evt.keyCode || evt.key] = null;
                     this.keyUp(lastKeyInfo);
                 }
             }
@@ -233,8 +243,8 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
     keyDown(speccyKey) {
         this.sendKeyMessage(speccyKey, true);
         if ('caps' in speccyKey || 'sym' in speccyKey) {
-            this.sendKeyMessage(SPECCY.CAPS_SHIFT, 'caps' in speccyKey);
-            this.sendKeyMessage(SPECCY.SYMBOL_SHIFT, 'sym' in speccyKey);
+            this.sendKeyMessage(SPECCY.CAPS_SHIFT, !!speccyKey.caps);
+            this.sendKeyMessage(SPECCY.SYMBOL_SHIFT, !!speccyKey.sym);
         } else if (speccyKey.isCaps) {
             this.capsIsShifted = true;
         } else if (speccyKey.isSymbol) {
@@ -245,8 +255,8 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
     keyUp(speccyKey) {
         this.sendKeyMessage(speccyKey, false);
         if ('caps' in speccyKey || 'sym' in speccyKey) {
-            this.sendKeyMessage(SPECCY.CAPS_SHIFT, this.capsIsShifted);
-            this.sendKeyMessage(SPECCY.SYMBOL_SHIFT, this.symbolIsShifted);
+            this.sendKeyMessage(SPECCY.CAPS_SHIFT, speccyKey.caps ? true : this.capsIsShifted);
+            this.sendKeyMessage(SPECCY.SYMBOL_SHIFT, speccyKey.sym ? true : this.symbolIsShifted);
         } else if (speccyKey.isCaps) {
             this.capsIsShifted = false;
         } else if (speccyKey.isSymbol) {

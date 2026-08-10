@@ -780,16 +780,33 @@ window.JSSpeccy = (container, opts) => {
                 searchButton.innerText = 'Search';
                 return response.json();
             }).then(data => {
-                resultsContainer.innerHTML = '<ul></ul><p>- powered by <a href="https://archive.org/">Internet Archive</a></p>';
+                resultsContainer.innerHTML = '<ul style="list-style-type: none; padding-left: 0; margin-top: 12px;"></ul><p style="font-size: 12px; color: #a0a0b0; margin-top: 16px;">- powered by <a href="https://archive.org/" target="_blank" style="color: #60a5fa; text-decoration: none;">Internet Archive</a></p>';
                 const ul = resultsContainer.querySelector('ul');
                 const results = data.response.docs;
                 results.forEach(result => {
                     const li = document.createElement('li');
+                    li.style.margin = '8px 0';
+                    li.style.fontSize = '14px';
+                    li.style.lineHeight = '1.4';
                     ul.appendChild(li);
                     const resultLink = document.createElement('a');
                     resultLink.href = '#';
                     resultLink.innerText = result.title;
-                    const creator = document.createTextNode(' - ' + result.creator)
+                    resultLink.style.color = '#38bdf8';
+                    resultLink.style.textDecoration = 'none';
+                    resultLink.style.fontWeight = '600';
+                    resultLink.style.transition = 'color 0.15s';
+                    resultLink.addEventListener('mouseenter', () => {
+                        resultLink.style.color = '#7dd3fc';
+                        resultLink.style.textDecoration = 'underline';
+                    });
+                    resultLink.addEventListener('mouseleave', () => {
+                        resultLink.style.color = '#38bdf8';
+                        resultLink.style.textDecoration = 'none';
+                    });
+                    const creator = document.createElement('span');
+                    creator.style.color = '#94a3b8';
+                    creator.textContent = ' - ' + (result.creator || 'Desconocido');
                     li.appendChild(resultLink);
                     li.appendChild(creator);
                     resultLink.addEventListener('click', (e) => {

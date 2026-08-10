@@ -95,8 +95,8 @@ export class VirtualKeyboard {
             styleElem.textContent = `
                 .jsspeccy-virtual-keyboard {
                     width: 100%;
-                    max-width: 100%;
-                    margin: 0;
+                    max-width: 720px;
+                    margin: 0 auto;
                     flex-shrink: 0;
                     padding: 4px 4px;
                     box-sizing: border-box;

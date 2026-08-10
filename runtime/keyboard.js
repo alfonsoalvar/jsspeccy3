@@ -1,62 +1,95 @@
 export const SPECCY = {
-    ONE: {row: 3, mask: 0x01},
-    TWO: {row: 3, mask: 0x02},
-    THREE: {row: 3, mask: 0x04},
-    FOUR: {row: 3, mask: 0x08},
-    FIVE: {row: 3, mask: 0x10},
-    SIX: {row: 4, mask: 0x10},
-    SEVEN: {row: 4, mask: 0x08},
-    EIGHT: {row: 4, mask: 0x04},
-    NINE: {row: 4, mask: 0x02},
-    ZERO: {row: 4, mask: 0x01},
+    ONE: { row: 3, mask: 0x01 },
+    TWO: { row: 3, mask: 0x02 },
+    THREE: { row: 3, mask: 0x04 },
+    FOUR: { row: 3, mask: 0x08 },
+    FIVE: { row: 3, mask: 0x10 },
+    SIX: { row: 4, mask: 0x10 },
+    SEVEN: { row: 4, mask: 0x08 },
+    EIGHT: { row: 4, mask: 0x04 },
+    NINE: { row: 4, mask: 0x02 },
+    ZERO: { row: 4, mask: 0x01 },
 
-    Q: {row: 2, mask: 0x01},
-    W: {row: 2, mask: 0x02},
-    E: {row: 2, mask: 0x04},
-    R: {row: 2, mask: 0x08},
-    T: {row: 2, mask: 0x10},
-    Y: {row: 5, mask: 0x10},
-    U: {row: 5, mask: 0x08},
-    I: {row: 5, mask: 0x04},
-    O: {row: 5, mask: 0x02},
-    P: {row: 5, mask: 0x01},
+    Q: { row: 2, mask: 0x01 },
+    W: { row: 2, mask: 0x02 },
+    E: { row: 2, mask: 0x04 },
+    R: { row: 2, mask: 0x08 },
+    T: { row: 2, mask: 0x10 },
+    Y: { row: 5, mask: 0x10 },
+    U: { row: 5, mask: 0x08 },
+    I: { row: 5, mask: 0x04 },
+    O: { row: 5, mask: 0x02 },
+    P: { row: 5, mask: 0x01 },
 
-    A: {row: 1, mask: 0x01},
-    S: {row: 1, mask: 0x02},
-    D: {row: 1, mask: 0x04},
-    F: {row: 1, mask: 0x08},
-    G: {row: 1, mask: 0x10},
-    H: {row: 6, mask: 0x10},
-    J: {row: 6, mask: 0x08},
-    K: {row: 6, mask: 0x04},
-    L: {row: 6, mask: 0x02},
-    ENTER: {row: 6, mask: 0x01},
+    A: { row: 1, mask: 0x01 },
+    S: { row: 1, mask: 0x02 },
+    D: { row: 1, mask: 0x04 },
+    F: { row: 1, mask: 0x08 },
+    G: { row: 1, mask: 0x10 },
+    H: { row: 6, mask: 0x10 },
+    J: { row: 6, mask: 0x08 },
+    K: { row: 6, mask: 0x04 },
+    L: { row: 6, mask: 0x02 },
+    ENTER: { row: 6, mask: 0x01 },
 
-    CAPS_SHIFT: {row: 0, mask: 0x01, isCaps: true},
-    Z: {row: 0, mask: 0x02},
-    X: {row: 0, mask: 0x04},
-    C: {row: 0, mask: 0x08},
-    V: {row: 0, mask: 0x10},
-    B: {row: 7, mask: 0x10},
-    N: {row: 7, mask: 0x08},
-    M: {row: 7, mask: 0x04},
-    SYMBOL_SHIFT: {row: 7, mask: 0x02, isSymbol: true},
-    BREAK_SPACE: {row: 7, mask: 0x01},
+    CAPS_SHIFT: { row: 0, mask: 0x01, isCaps: true },
+    Z: { row: 0, mask: 0x02 },
+    X: { row: 0, mask: 0x04 },
+    C: { row: 0, mask: 0x08 },
+    V: { row: 0, mask: 0x10 },
+    B: { row: 7, mask: 0x10 },
+    N: { row: 7, mask: 0x08 },
+    M: { row: 7, mask: 0x04 },
+    SYMBOL_SHIFT: { row: 7, mask: 0x02, isSymbol: true },
+    BREAK_SPACE: { row: 7, mask: 0x01 },
 };
 
 export function sym(speccyKey) {
     // patch key definition to indicate that symbol shift should be activated
-    return {...speccyKey, sym: true}
+    return { ...speccyKey, sym: true }
 }
 
 export function caps(speccyKey) {
     // patch key definition to indicate that caps shift should be activated
-    return {...speccyKey, caps: true}
+    return { ...speccyKey, caps: true }
 }
 
 
-// Mapping from JS key codes to Spectrum key definitions
+// Mapping from JS key codes / names / codes to Spectrum key definitions
 const KEY_CODES = {
+    '1': SPECCY.ONE,
+    '2': SPECCY.TWO,
+    '3': SPECCY.THREE,
+    '4': SPECCY.FOUR,
+    '5': SPECCY.FIVE,
+    '6': SPECCY.SIX,
+    '7': SPECCY.SEVEN,
+    '8': SPECCY.EIGHT,
+    '9': SPECCY.NINE,
+    '0': SPECCY.ZERO,
+
+    'Digit1': SPECCY.ONE,
+    'Digit2': SPECCY.TWO,
+    'Digit3': SPECCY.THREE,
+    'Digit4': SPECCY.FOUR,
+    'Digit5': SPECCY.FIVE,
+    'Digit6': SPECCY.SIX,
+    'Digit7': SPECCY.SEVEN,
+    'Digit8': SPECCY.EIGHT,
+    'Digit9': SPECCY.NINE,
+    'Digit0': SPECCY.ZERO,
+
+    'Numpad1': SPECCY.ONE,
+    'Numpad2': SPECCY.TWO,
+    'Numpad3': SPECCY.THREE,
+    'Numpad4': SPECCY.FOUR,
+    'Numpad5': SPECCY.FIVE,
+    'Numpad6': SPECCY.SIX,
+    'Numpad7': SPECCY.SEVEN,
+    'Numpad8': SPECCY.EIGHT,
+    'Numpad9': SPECCY.NINE,
+    'Numpad0': SPECCY.ZERO,
+
     49: SPECCY.ONE,
     50: SPECCY.TWO,
     51: SPECCY.THREE,
@@ -193,40 +226,74 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
         // keypress. This table allows us to recognise when changes like this happen.
         this.seenKeyCodes = {};
 
-        this.keydownHandler = (evt) => {
-            let keyInfo = KEY_CODES[evt.key];
-            if (!keyInfo && evt.keyCode !== 192) {
-                keyInfo = KEY_CODES[evt.keyCode];
-            } else if (!keyInfo && evt.keyCode === 192) {
-                keyInfo = SPECCY.CAPS_SHIFT;
+        this.resolveKeyInfo = (evt) => {
+            // Priority 1: Check code for digits and numpad digits directly
+            if (evt.code) {
+                if (evt.code === 'Digit1') return SPECCY.ONE;
+                if (evt.code === 'Digit2') return SPECCY.TWO;
+                if (evt.code === 'Digit3') return SPECCY.THREE;
+                if (evt.code === 'Digit4') return SPECCY.FOUR;
+                if (evt.code === 'Digit5') return SPECCY.FIVE;
+                if (evt.code === 'Digit6') return SPECCY.SIX;
+                if (evt.code === 'Digit7') return SPECCY.SEVEN;
+                if (evt.code === 'Digit8') return SPECCY.EIGHT;
+                if (evt.code === 'Digit9') return SPECCY.NINE;
+                if (evt.code === 'Digit0') return SPECCY.ZERO;
+
+                if (evt.code === 'Numpad1') return SPECCY.ONE;
+                if (evt.code === 'Numpad2') return SPECCY.TWO;
+                if (evt.code === 'Numpad3') return SPECCY.THREE;
+                if (evt.code === 'Numpad4') return SPECCY.FOUR;
+                if (evt.code === 'Numpad5') return SPECCY.FIVE;
+                if (evt.code === 'Numpad6') return SPECCY.SIX;
+                if (evt.code === 'Numpad7') return SPECCY.SEVEN;
+                if (evt.code === 'Numpad8') return SPECCY.EIGHT;
+                if (evt.code === 'Numpad9') return SPECCY.NINE;
+                if (evt.code === 'Numpad0') return SPECCY.ZERO;
+
+                if (evt.code === 'ArrowLeft') return caps(SPECCY.FIVE);
+                if (evt.code === 'ArrowRight') return caps(SPECCY.EIGHT);
+                if (evt.code === 'ArrowUp') return caps(SPECCY.SEVEN);
+                if (evt.code === 'ArrowDown') return caps(SPECCY.SIX);
+                if (evt.code === 'Backspace') return caps(SPECCY.ZERO);
+                if (evt.code === 'ShiftLeft' || evt.code === 'ShiftRight') return SPECCY.CAPS_SHIFT;
+                if (evt.code === 'ControlLeft' || evt.code === 'ControlRight' || evt.code === 'AltRight') return SPECCY.SYMBOL_SHIFT;
             }
 
+            // Priority 2: Check by evt.key or keyCode lookup table
+            if (KEY_CODES[evt.key]) return KEY_CODES[evt.key];
+            if (evt.keyCode === 192) return SPECCY.CAPS_SHIFT;
+            if (KEY_CODES[evt.keyCode]) return KEY_CODES[evt.keyCode];
+
+            return null;
+        };
+
+        this.keydownHandler = (evt) => {
+            const keyInfo = this.resolveKeyInfo(evt);
+
             if (keyInfo) {
-                const lastKeyInfo = this.seenKeyCodes[evt.keyCode || evt.key];
+                const keyId = evt.code || evt.keyCode || evt.key;
+                const lastKeyInfo = this.seenKeyCodes[keyId];
                 if (lastKeyInfo && lastKeyInfo !== keyInfo) {
                     this.keyUp(lastKeyInfo);
                 }
-                this.seenKeyCodes[evt.keyCode || evt.key] = keyInfo;
+                this.seenKeyCodes[keyId] = keyInfo;
                 this.keyDown(keyInfo);
             }
             if (!evt.metaKey) evt.preventDefault();
         };
 
         this.keyupHandler = (evt) => {
-            let keyInfo = KEY_CODES[evt.key];
-            if (!keyInfo && evt.keyCode !== 192) {
-                keyInfo = KEY_CODES[evt.keyCode];
-            } else if (!keyInfo && evt.keyCode === 192) {
-                keyInfo = SPECCY.CAPS_SHIFT;
-            }
+            const keyInfo = this.resolveKeyInfo(evt);
+            const keyId = evt.code || evt.keyCode || evt.key;
 
             if (keyInfo) {
-                this.seenKeyCodes[evt.keyCode || evt.key] = null;
+                this.seenKeyCodes[keyId] = null;
                 this.keyUp(keyInfo);
             } else {
-                const lastKeyInfo = this.seenKeyCodes[evt.keyCode || evt.key];
+                const lastKeyInfo = this.seenKeyCodes[keyId];
                 if (lastKeyInfo) {
-                    this.seenKeyCodes[evt.keyCode || evt.key] = null;
+                    this.seenKeyCodes[keyId] = null;
                     this.keyUp(lastKeyInfo);
                 }
             }

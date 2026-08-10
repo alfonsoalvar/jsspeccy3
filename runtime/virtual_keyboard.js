@@ -1,68 +1,70 @@
 import { SPECCY, caps, sym } from './keyboard.js';
 
-const KEYBOARD_LAYOUT = [
+const KEYBOARD_LAYOUT_PLUS2 = [
     [
-        { label: '1', key: SPECCY.ONE },
-        { label: '2', key: SPECCY.TWO },
-        { label: '3', key: SPECCY.THREE },
-        { label: '4', key: SPECCY.FOUR },
-        { label: '5', key: SPECCY.FIVE },
-        { label: '6', key: SPECCY.SIX },
-        { label: '7', key: SPECCY.SEVEN },
-        { label: '8', key: SPECCY.EIGHT },
-        { label: '9', key: SPECCY.NINE },
-        { label: '0', key: SPECCY.ZERO },
-        { label: 'DEL', key: caps(SPECCY.ZERO), flex: 1.5, type: 'action' },
+        { label: '1', subLabel: '!', key: SPECCY.ONE },
+        { label: '2', subLabel: '@', key: SPECCY.TWO },
+        { label: '3', subLabel: '#', key: SPECCY.THREE },
+        { label: '4', subLabel: '$', key: SPECCY.FOUR },
+        { label: '5', subLabel: '%', key: SPECCY.FIVE },
+        { label: '6', subLabel: '&', key: SPECCY.SIX },
+        { label: '7', subLabel: "'", key: SPECCY.SEVEN },
+        { label: '8', subLabel: '(', key: SPECCY.EIGHT },
+        { label: '9', subLabel: ')', key: SPECCY.NINE },
+        { label: '0', subLabel: '_', key: SPECCY.ZERO },
+        { label: 'BREAK', key: caps(SPECCY.BREAK_SPACE), flex: 1.5, type: 'action' },
     ],
     [
+        { label: 'BORRAR', key: caps(SPECCY.ZERO), flex: 1.5, type: 'action' },
         { label: 'Q', key: SPECCY.Q },
         { label: 'W', key: SPECCY.W },
         { label: 'E', key: SPECCY.E },
-        { label: 'R', key: SPECCY.R },
-        { label: 'T', key: SPECCY.T },
-        { label: 'Y', key: SPECCY.Y },
-        { label: 'U', key: SPECCY.U },
-        { label: 'I', key: SPECCY.I },
+        { label: 'R', subLabel: '< RUN', key: SPECCY.R },
+        { label: 'T', subLabel: '>', key: SPECCY.T },
+        { label: 'Y', subLabel: '/', key: SPECCY.Y },
+        { label: 'U', subLabel: '¿', key: SPECCY.U },
+        { label: 'I', subLabel: 'CODE', key: SPECCY.I },
         { label: 'O', key: SPECCY.O },
         { label: 'P', key: SPECCY.P },
     ],
     [
         { label: 'A', key: SPECCY.A },
-        { label: 'S', key: SPECCY.S },
-        { label: 'D', key: SPECCY.D },
+        { label: 'S', subLabel: 'ñ', key: SPECCY.S },
+        { label: 'D', subLabel: 'Ñ', key: SPECCY.D },
         { label: 'F', key: SPECCY.F },
         { label: 'G', key: SPECCY.G },
-        { label: 'H', key: SPECCY.H },
-        { label: 'J', key: SPECCY.J },
-        { label: 'K', key: SPECCY.K },
-        { label: 'L', key: SPECCY.L },
-        { label: 'ENTER', key: SPECCY.ENTER, flex: 2, type: 'action' },
+        { label: 'H', subLabel: '^', key: SPECCY.H },
+        { label: 'J', subLabel: '-', key: SPECCY.J },
+        { label: 'K', subLabel: '+', key: SPECCY.K },
+        { label: 'L', subLabel: '=', key: SPECCY.L },
+        { label: 'INTRO', key: SPECCY.ENTER, flex: 2, type: 'action' },
     ],
     [
-        { label: 'CAPS', key: SPECCY.CAPS_SHIFT, flex: 1.5, type: 'shift', isCaps: true },
-        { label: 'Z', key: SPECCY.Z },
-        { label: 'X', key: SPECCY.X },
-        { label: 'C', key: SPECCY.C },
-        { label: 'V', key: SPECCY.V },
-        { label: 'B', key: SPECCY.B },
-        { label: 'N', key: SPECCY.N },
-        { label: 'M', key: SPECCY.M },
-        { label: ',', key: sym(SPECCY.N), type: 'action' },
+        { label: 'MAYÚS', key: SPECCY.CAPS_SHIFT, flex: 1.4, type: 'shift', isCaps: true },
+        { label: 'BLOQ MAYS', key: caps(SPECCY.TWO), flex: 1.3, type: 'action', isCapsLock: true },
+        { label: 'Z', subLabel: ':', key: SPECCY.Z },
+        { label: 'X', subLabel: 'Pt', key: SPECCY.X },
+        { label: 'C', subLabel: '?', key: SPECCY.C },
+        { label: 'V', subLabel: '/', key: SPECCY.V },
+        { label: 'B', subLabel: '*', key: SPECCY.B },
+        { label: 'N', subLabel: ',', key: SPECCY.N },
+        { label: 'M', subLabel: '.', key: SPECCY.M },
         { label: '.', key: sym(SPECCY.M), type: 'action' },
-        { label: 'CAPS', key: SPECCY.CAPS_SHIFT, flex: 1.5, type: 'shift', isCaps: true },
+        { label: 'MAYÚS', key: SPECCY.CAPS_SHIFT, flex: 1.4, type: 'shift', isCaps: true },
     ],
-
     [
-        { label: 'SPACE', key: SPECCY.BREAK_SPACE, flex: 5, type: 'action' },
-        { label: '\u25C0', key: caps(SPECCY.FIVE), flex: 1.2, type: 'nav' },
-        { label: '\u25B2', key: caps(SPECCY.SEVEN), flex: 1.2, type: 'nav' },
-        { label: '\u25BC', key: caps(SPECCY.SIX), flex: 1.2, type: 'nav' },
-        { label: '\u25B6', key: caps(SPECCY.EIGHT), flex: 1.2, type: 'nav' },
+        { label: 'SIMB', key: SPECCY.SYMBOL_SHIFT, flex: 1.3, type: 'shift', isSym: true },
+        { label: ';', key: sym(SPECCY.O), type: 'action' },
+        { label: '"', key: sym(SPECCY.P), type: 'action' },
+        { label: '\u25C0', key: caps(SPECCY.FIVE), flex: 1.1, type: 'nav' },
+        { label: '\u25B6', key: caps(SPECCY.EIGHT), flex: 1.1, type: 'nav' },
+        { label: 'ESPACIO', key: SPECCY.BREAK_SPACE, flex: 3.5, type: 'action' },
+        { label: '\u25B2', key: caps(SPECCY.SEVEN), flex: 1.1, type: 'nav' },
+        { label: '\u25BC', key: caps(SPECCY.SIX), flex: 1.1, type: 'nav' },
+        { label: ',', key: sym(SPECCY.N), type: 'action' },
+        { label: 'SIMB', key: SPECCY.SYMBOL_SHIFT, flex: 1.3, type: 'shift', isSym: true },
     ]
 ];
-
-
-
 
 export class VirtualKeyboard {
     constructor(container, emulator) {
@@ -70,7 +72,9 @@ export class VirtualKeyboard {
         this.emulator = emulator;
         this.visible = true;
 
-        this.capsLocked = false;
+        this.capsShiftActive = false;
+        this.capsLockActive = false;
+        this.symLocked = false;
 
         this.elem = document.createElement('div');
         this.elem.className = 'jsspeccy-virtual-keyboard';
@@ -91,11 +95,10 @@ export class VirtualKeyboard {
                     max-width: 100%;
                     margin: 0;
                     flex-shrink: 0;
-                    padding: 4px 6px;
+                    padding: 4px 4px;
                     box-sizing: border-box;
-                    background: #1c1c1e;
-                    border-top: 1px solid #3a3a3c;
-                    border-radius: 0;
+                    background: #18181c;
+                    border-top: 2px solid #33333d;
                     user-select: none;
                     -webkit-user-select: none;
                     touch-action: manipulation;
@@ -104,8 +107,8 @@ export class VirtualKeyboard {
                 .jsspeccy-vk-row {
                     display: flex;
                     justify-content: center;
-                    margin-bottom: 5px;
-                    gap: 3px;
+                    margin-bottom: 4px;
+                    gap: 2px;
                 }
                 .jsspeccy-vk-row:last-child {
                     margin-bottom: 0;
@@ -113,73 +116,105 @@ export class VirtualKeyboard {
                 .jsspeccy-vk-key {
                     flex: 1;
                     min-width: 0;
-                    height: 32px;
-                    background: #2c2c2e;
+                    height: 30px;
+                    background: #2a2a32;
                     color: #f2f2f7;
-                    border: 1px solid #48484a;
-                    border-radius: 5px;
+                    border: 1px solid #42424e;
+                    border-radius: 4px;
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    font-size: 12px;
+                    font-size: 11px;
                     font-weight: bold;
                     cursor: pointer;
-                    box-shadow: 0 2px 0 #141414;
+                    box-shadow: 0 2px 0 #121216;
                     position: relative;
                     touch-action: none;
                     transition: background-color 0.1s, transform 0.05s;
+                    padding: 0 1px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
                 .jsspeccy-vk-key:active, .jsspeccy-vk-key.active {
-                    background: #007aff !important;
+                    background: #e11d48 !important;
                     color: #ffffff !important;
                     transform: translateY(2px);
                     box-shadow: none;
                 }
                 .jsspeccy-vk-key.shift-active {
-                    background: #ff9500 !important;
+                    background: #d97706 !important;
                     color: #ffffff !important;
-                    border-color: #ffb340;
+                    border-color: #f59e0b;
                 }
                 .jsspeccy-vk-key-action {
-                    background: #3a3a3c;
-                    font-size: 11px;
+                    background: #343440;
+                    color: #e2e8f0;
+                    font-size: 9px;
+                    letter-spacing: -0.2px;
                 }
                 .jsspeccy-vk-key-shift {
-                    background: #3a3a3c;
-                    color: #ffcc00;
-                    font-size: 11px;
+                    background: #383846;
+                    color: #fbbf24;
+                    font-size: 9px;
+                    letter-spacing: -0.2px;
                 }
                 .jsspeccy-vk-key-nav {
-                    background: #242426;
-                    color: #30d158;
-                    border-color: #3a3a3c;
-                    font-size: 15px;
+                    background: #22222a;
+                    color: #4ade80;
+                    border-color: #383846;
+                    font-size: 14px;
                 }
-                @media (max-width: 480px), (max-height: 700px) {
+                .jsspeccy-vk-sublabel {
+                    position: absolute;
+                    top: 1px;
+                    right: 2px;
+                    font-size: 7.5px;
+                    font-weight: 700;
+                    color: #f59e0b;
+                    pointer-events: none;
+                    line-height: 1;
+                    opacity: 0.85;
+                }
+                .jsspeccy-virtual-keyboard.sym-active-mode .jsspeccy-vk-sublabel {
+                    color: #38bdf8 !important;
+                    opacity: 1 !important;
+                    font-size: 8px !important;
+                }
+                @media (max-width: 520px), (max-height: 700px) {
                     .jsspeccy-virtual-keyboard {
-                        padding: 3px;
-                        margin-top: 4px;
+                        padding: 3px 2px;
                     }
                     .jsspeccy-vk-row {
-                        margin-bottom: 3px;
-                        gap: 2px;
+                        margin-bottom: 2px;
+                        gap: 1.5px;
                     }
                     .jsspeccy-vk-key {
-                        height: 28px;
-                        font-size: 10px;
+                        height: 26px;
+                        font-size: 9.5px;
+                        border-radius: 3px;
+                    }
+                    .jsspeccy-vk-key-action, .jsspeccy-vk-key-shift {
+                        font-size: 8px;
+                        padding: 0;
                     }
                     .jsspeccy-vk-key-nav {
-                        font-size: 13px;
+                        font-size: 12px;
+                    }
+                    .jsspeccy-vk-sublabel {
+                        font-size: 6.5px;
+                        top: 0px;
+                        right: 1px;
                     }
                 }
-
             `;
             document.head.appendChild(styleElem);
         }
     }
 
     buildLayout() {
-        KEYBOARD_LAYOUT.forEach(rowDef => {
+        KEYBOARD_LAYOUT_PLUS2.forEach(rowDef => {
             const rowElem = document.createElement('div');
             rowElem.className = 'jsspeccy-vk-row';
 
@@ -193,11 +228,18 @@ export class VirtualKeyboard {
                     keyElem.classList.add(`jsspeccy-vk-key-${item.type}`);
                 }
 
+                if (item.subLabel) {
+                    const subElem = document.createElement('span');
+                    subElem.className = 'jsspeccy-vk-sublabel';
+                    subElem.textContent = item.subLabel;
+                    keyElem.appendChild(subElem);
+                }
+
                 const labelElem = document.createElement('span');
                 labelElem.className = 'main-label';
                 if (/^[A-Z]$/.test(item.label)) {
                     labelElem.setAttribute('data-letter', item.label);
-                    labelElem.textContent = this.capsLocked ? item.label : item.label.toLowerCase();
+                    labelElem.textContent = (this.capsShiftActive || this.capsLockActive) ? item.label : item.label.toLowerCase();
                 } else {
                     labelElem.textContent = item.label;
                 }
@@ -211,11 +253,16 @@ export class VirtualKeyboard {
         });
     }
 
+    isUpperMode() {
+        return this.capsShiftActive || this.capsLockActive;
+    }
+
     updateLetterCase() {
+        const isUpper = this.isUpperMode();
         const letterElems = this.elem.querySelectorAll('.main-label[data-letter]');
         letterElems.forEach(elem => {
             const letter = elem.getAttribute('data-letter');
-            elem.textContent = this.capsLocked ? letter : letter.toLowerCase();
+            elem.textContent = isUpper ? letter : letter.toLowerCase();
         });
     }
 
@@ -224,10 +271,11 @@ export class VirtualKeyboard {
             if (e) e.preventDefault();
             keyElem.classList.add('active');
 
+            // Handle MAYÚS (Caps Shift)
             if (item.isCaps) {
-                this.capsLocked = !this.capsLocked;
+                this.capsShiftActive = !this.capsShiftActive;
                 const capsButtons = this.elem.querySelectorAll('[is-caps="true"]');
-                if (this.capsLocked) {
+                if (this.capsShiftActive) {
                     capsButtons.forEach(btn => btn.classList.add('shift-active'));
                     if (this.emulator.keyboardHandler) {
                         this.emulator.keyboardHandler.keyDown(SPECCY.CAPS_SHIFT);
@@ -242,16 +290,65 @@ export class VirtualKeyboard {
                 return;
             }
 
+            // Handle BLOQ MAYS (Caps Lock = Caps Shift + 2 in Spectrum OS)
+            if (item.isCapsLock) {
+                this.capsLockActive = !this.capsLockActive;
+                if (this.capsLockActive) {
+                    keyElem.classList.add('shift-active');
+                } else {
+                    keyElem.classList.remove('shift-active');
+                }
 
-
-            if (this.emulator.keyboardHandler) {
-                if (item.key && item.key.caps) {
+                // Send hardware Spectrum combination Caps Shift + 2 to toggle Spectrum BASIC Caps Lock
+                if (this.emulator.keyboardHandler) {
                     this.emulator.keyboardHandler.keyDown(SPECCY.CAPS_SHIFT);
+                    this.emulator.keyboardHandler.keyDown(SPECCY.TWO);
+                    setTimeout(() => {
+                        if (this.emulator.keyboardHandler) {
+                            this.emulator.keyboardHandler.keyUp(SPECCY.TWO);
+                            if (!this.capsShiftActive) {
+                                this.emulator.keyboardHandler.keyUp(SPECCY.CAPS_SHIFT);
+                            }
+                        }
+                    }, 60);
                 }
-                if (item.key && item.key.sym) {
-                    this.emulator.keyboardHandler.keyDown(SPECCY.SYMBOL_SHIFT);
+                this.updateLetterCase();
+                return;
+            }
+
+            // Handle SIMB (Symbol Shift)
+            if (item.isSym) {
+                this.symLocked = !this.symLocked;
+                const symButtons = this.elem.querySelectorAll('[is-sym="true"]');
+                if (this.symLocked) {
+                    symButtons.forEach(btn => btn.classList.add('shift-active'));
+                    this.elem.classList.add('sym-active-mode');
+                    if (this.emulator.keyboardHandler) {
+                        this.emulator.keyboardHandler.keyDown(SPECCY.SYMBOL_SHIFT);
+                    }
+                } else {
+                    symButtons.forEach(btn => btn.classList.remove('shift-active'));
+                    this.elem.classList.remove('sym-active-mode');
+                    if (this.emulator.keyboardHandler) {
+                        this.emulator.keyboardHandler.keyUp(SPECCY.SYMBOL_SHIFT);
+                    }
                 }
-                this.emulator.keyboardHandler.keyDown(item.key);
+                return;
+            }
+
+            // Standard keys
+            if (this.emulator.keyboardHandler) {
+                if (item.key) {
+                    if (item.key.caps && !this.capsShiftActive) {
+                        this.emulator.keyboardHandler.keyDown(SPECCY.CAPS_SHIFT);
+                    }
+                    if (item.key.sym && !this.symLocked) {
+                        this.emulator.keyboardHandler.keyDown(SPECCY.SYMBOL_SHIFT);
+                    }
+                    if (item.key.row !== undefined) {
+                        this.emulator.keyboardHandler.keyDown(item.key);
+                    }
+                }
             }
         };
 
@@ -259,24 +356,39 @@ export class VirtualKeyboard {
             if (e) e.preventDefault();
             keyElem.classList.remove('active');
 
-            if (item.isCaps) {
+            if (item.isCaps || item.isCapsLock || item.isSym) {
                 return;
             }
 
             if (this.emulator.keyboardHandler) {
-                this.emulator.keyboardHandler.keyUp(item.key);
-                if (item.key && item.key.caps && !this.capsLocked) {
+                if (item.key) {
+                    if (item.key.row !== undefined) {
+                        this.emulator.keyboardHandler.keyUp(item.key);
+                    }
+                    if (item.key.caps && !this.capsShiftActive) {
+                        this.emulator.keyboardHandler.keyUp(SPECCY.CAPS_SHIFT);
+                    }
+                    if (item.key.sym && !this.symLocked) {
+                        this.emulator.keyboardHandler.keyUp(SPECCY.SYMBOL_SHIFT);
+                    }
+                }
+            }
+
+            // Auto-release MAYÚS (Caps Shift) after typing a character if it was temporary shift
+            if (this.capsShiftActive && !this.capsLockActive) {
+                this.capsShiftActive = false;
+                const capsButtons = this.elem.querySelectorAll('[is-caps="true"]');
+                capsButtons.forEach(btn => btn.classList.remove('shift-active'));
+                if (this.emulator.keyboardHandler) {
                     this.emulator.keyboardHandler.keyUp(SPECCY.CAPS_SHIFT);
                 }
-                if (item.key && item.key.sym) {
-                    this.emulator.keyboardHandler.keyUp(SPECCY.SYMBOL_SHIFT);
-                }
+                this.updateLetterCase();
             }
         };
 
-
-
         if (item.isCaps) keyElem.setAttribute('is-caps', 'true');
+        if (item.isSym) keyElem.setAttribute('is-sym', 'true');
+        if (item.isCapsLock) keyElem.setAttribute('is-caps-lock', 'true');
 
         keyElem.addEventListener('pointerdown', pressKey);
         keyElem.addEventListener('pointerup', releaseKey);
@@ -306,4 +418,3 @@ export class VirtualKeyboard {
         if (this.onToggle) this.onToggle();
     }
 }
-

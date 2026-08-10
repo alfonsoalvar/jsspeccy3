@@ -2,6 +2,7 @@ export const APP_NAME = 'JSSpeccy';
 export const APP_VERSION = '4.0.1';
 export const APP_TITLE = `${APP_NAME} v${APP_VERSION}`;
 export const APP_DESCRIPTION = 'a ZX Spectrum emulator in the browser with mobile support and more features';
+export const APP_ABOUT_TEXT = 'is a web-based ZX Spectrum emulator built with JavaScript and WebAssembly, featuring an adaptive mobile layout and virtual touch keyboard.';
 export const APP_AUTHOR = 'Alfonso Alvar';
 export const APP_AUTHOR_EMAIL = 'hola@alfonsoalvar.com';
 export const ORIGINAL_AUTHOR = 'Matt Westcott (Gasman)';
@@ -15,6 +16,7 @@ if (typeof window !== 'undefined') {
         APP_VERSION,
         APP_TITLE,
         APP_DESCRIPTION,
+        APP_ABOUT_TEXT,
         APP_AUTHOR,
         APP_AUTHOR_EMAIL,
         ORIGINAL_AUTHOR,

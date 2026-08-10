@@ -8,7 +8,7 @@ import { parseSNAFile, parseZ80File, parseSZXFile } from './snapshot.js';
 import { TAPFile, TZXFile } from './tape.js';
 import { StandardKeyboardHandler, RecreatedZXSpectrumHandler } from './keyboard.js';
 import { AudioHandler } from './audio.js';
-import { APP_NAME, APP_VERSION, APP_TITLE, APP_DESCRIPTION, APP_AUTHOR, APP_AUTHOR_EMAIL, ORIGINAL_AUTHOR, ORIGINAL_PROJECT } from './common.js';
+import { APP_NAME, APP_VERSION, APP_TITLE, APP_DESCRIPTION, APP_ABOUT_TEXT, APP_AUTHOR, APP_AUTHOR_EMAIL, ORIGINAL_AUTHOR, ORIGINAL_PROJECT } from './common.js';
 
 import openIcon from './icons/open.svg';
 import resetIcon from './icons/reset.svg';
@@ -648,7 +648,7 @@ window.JSSpeccy = (container, opts) => {
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 16px 20px; color: #e0e0e0; line-height: 1.6;">
                 <h2 style="margin-top: 0; color: #ffffff; font-size: 20px; font-weight: 700; border-bottom: 1px solid #3a3a48; padding-bottom: 8px;">About ${APP_TITLE}</h2>
                 <p style="margin: 12px 0; font-size: 14px;">
-                    <strong>${APP_TITLE}</strong> is a web-based ZX Spectrum emulator built with JavaScript and WebAssembly, featuring an adaptive mobile layout and virtual touch keyboard.
+                    <strong>${APP_TITLE}</strong> ${APP_ABOUT_TEXT}
                 </p>
                 <div style="background-color: #262632; border: 1px solid #3a3a48; border-radius: 8px; padding: 12px 16px; margin: 16px 0;">
                     <p style="margin: 0 0 6px 0; font-size: 12px; color: #a0a0b0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Fork Author & Maintainer (v${APP_VERSION})</p>

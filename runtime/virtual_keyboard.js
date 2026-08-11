@@ -2,7 +2,7 @@ import { SPECCY, caps, sym } from './keyboard.js';
 
 const KEYBOARD_LAYOUT_PLUS2 = [
     [
-        { label: 'VIDEO NORM', subLabel: 'VIDEO INV', key: caps(SPECCY.FOUR), type: 'action', flex: 1.2 },
+        { label: 'NORM', subLabel: 'INV', key: caps(SPECCY.FOUR), type: 'action', flex: 1.2 },
         { label: '1', subLabel: '!', key: SPECCY.ONE },
         { label: '2', subLabel: '@', key: SPECCY.TWO },
         { label: '3', subLabel: '#', key: SPECCY.THREE },
@@ -44,8 +44,8 @@ const KEYBOARD_LAYOUT_PLUS2 = [
         { label: 'INTRO', key: SPECCY.ENTER, flex: 1.6, type: 'action' },
     ],
     [
-        { label: 'MAYUSCULAS', key: SPECCY.CAPS_SHIFT, flex: 1.5, type: 'shift', isCaps: true },
-        { label: 'BLOQ MAYS', key: caps(SPECCY.TWO), flex: 1.2, type: 'action', isCapsLock: true },
+        { label: 'MAYÚS', key: SPECCY.CAPS_SHIFT, flex: 1.5, type: 'shift', isCaps: true },
+        { label: 'B. MAYÚS', key: caps(SPECCY.TWO), flex: 1.2, type: 'action', isCapsLock: true },
         { label: 'Z', subLabel: ':', key: SPECCY.Z },
         { label: 'X', subLabel: 'Pt', key: SPECCY.X },
         { label: 'C', subLabel: '?', key: SPECCY.C },

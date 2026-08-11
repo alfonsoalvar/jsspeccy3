@@ -387,6 +387,17 @@ export class VirtualKeyboard {
                 }
                 this.updateLetterCase();
             }
+
+            // Auto-release SIMB (Symbol Shift) after typing a character
+            if (this.symLocked) {
+                this.symLocked = false;
+                const symButtons = this.elem.querySelectorAll('[is-sym="true"]');
+                symButtons.forEach(btn => btn.classList.remove('shift-active'));
+                this.elem.classList.remove('sym-active-mode');
+                if (this.emulator.keyboardHandler) {
+                    this.emulator.keyboardHandler.keyUp(SPECCY.SYMBOL_SHIFT);
+                }
+            }
         };
 
         if (item.isCaps) keyElem.setAttribute('is-caps', 'true');
@@ -395,11 +406,6 @@ export class VirtualKeyboard {
 
         keyElem.addEventListener('pointerdown', pressKey);
         keyElem.addEventListener('pointerup', releaseKey);
-        keyElem.addEventListener('pointerleave', releaseKey);
-        keyElem.addEventListener('pointercancel', releaseKey);
-
-        keyElem.addEventListener('touchstart', pressKey, { passive: false });
-        keyElem.addEventListener('touchend', releaseKey, { passive: false });
     }
 
     toggle() {

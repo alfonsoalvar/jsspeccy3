@@ -136,7 +136,6 @@ const KEY_CODES = {
     32: SPECCY.BREAK_SPACE, /* space */
 
     /* shifted combinations */
-    8: caps(SPECCY.ZERO), /* backspace */
     37: caps(SPECCY.FIVE), /* left arrow */
     38: caps(SPECCY.SEVEN), /* up arrow */
     39: caps(SPECCY.EIGHT), /* right arrow */
@@ -160,8 +159,15 @@ const KEY_CODES = {
     '*': sym(SPECCY.B),
     '@': sym(SPECCY.TWO),
     '#': sym(SPECCY.THREE),
+    '$': sym(SPECCY.FOUR),
+    '%': sym(SPECCY.FIVE),
+    '&': sym(SPECCY.SIX),
+    '(': sym(SPECCY.EIGHT),
+    ')': sym(SPECCY.NINE),
+    '^': sym(SPECCY.H),
+    '¿': sym(SPECCY.U),
     'ñ': caps(sym(SPECCY.S)),
-    'Ñ': sym(SPECCY.S),
+    'Ñ': caps(sym(SPECCY.D)),
 };
 KEY_CODES[String.fromCharCode(0x2264)] = sym(SPECCY.Q); // LESS_THAN_EQUAL symbol (≤)
 KEY_CODES[String.fromCharCode(0x2265)] = sym(SPECCY.E); // GREATER_THAN_EQUAL symbol (≥)
@@ -227,7 +233,12 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
         this.seenKeyCodes = {};
 
         this.resolveKeyInfo = (evt) => {
-            // Priority 1: Check code for digits and numpad digits directly
+            // Priority 1: Check by exact typed character (evt.key) for symbols, punctuation, and specific characters
+            if (evt.key && KEY_CODES[evt.key]) {
+                return KEY_CODES[evt.key];
+            }
+
+            // Priority 2: Check physical key codes for navigation, digits, and control keys
             if (evt.code) {
                 if (evt.code === 'Digit1') return SPECCY.ONE;
                 if (evt.code === 'Digit2') return SPECCY.TWO;
@@ -260,8 +271,7 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
                 if (evt.code === 'ControlLeft' || evt.code === 'ControlRight' || evt.code === 'AltRight') return SPECCY.SYMBOL_SHIFT;
             }
 
-            // Priority 2: Check by evt.key or keyCode lookup table
-            if (KEY_CODES[evt.key]) return KEY_CODES[evt.key];
+            // Priority 3: Fallback by keyCode
             if (evt.keyCode === 192) return SPECCY.CAPS_SHIFT;
             if (KEY_CODES[evt.keyCode]) return KEY_CODES[evt.keyCode];
 
@@ -322,8 +332,12 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
     keyUp(speccyKey) {
         this.sendKeyMessage(speccyKey, false);
         if ('caps' in speccyKey || 'sym' in speccyKey) {
-            this.sendKeyMessage(SPECCY.CAPS_SHIFT, speccyKey.caps ? true : this.capsIsShifted);
-            this.sendKeyMessage(SPECCY.SYMBOL_SHIFT, speccyKey.sym ? true : this.symbolIsShifted);
+            if (speccyKey.caps && !this.capsIsShifted) {
+                this.sendKeyMessage(SPECCY.CAPS_SHIFT, false);
+            }
+            if (speccyKey.sym && !this.symbolIsShifted) {
+                this.sendKeyMessage(SPECCY.SYMBOL_SHIFT, false);
+            }
         } else if (speccyKey.isCaps) {
             this.capsIsShifted = false;
         } else if (speccyKey.isSymbol) {

@@ -185,30 +185,33 @@ export class VirtualKeyboard {
                     opacity: 1 !important;
                     font-size: 8px !important;
                 }
-                @media (max-width: 520px), (max-height: 700px) {
+                @media (max-width: 600px), (max-height: 700px) {
                     .jsspeccy-virtual-keyboard {
-                        padding: 3px 2px;
+                        padding: 6px 3px;
                     }
                     .jsspeccy-vk-row {
-                        margin-bottom: 2px;
-                        gap: 1.5px;
+                        margin-bottom: 3px;
+                        gap: 2px;
                     }
                     .jsspeccy-vk-key {
-                        height: 26px;
-                        font-size: 9.5px;
-                        border-radius: 3px;
+                        height: 38px;
+                        font-size: 12px;
+                        border-radius: 4px;
                     }
                     .jsspeccy-vk-key-action, .jsspeccy-vk-key-shift {
-                        font-size: 8px;
-                        padding: 0;
+                        font-size: 9.5px;
+                        padding: 0 1px;
                     }
                     .jsspeccy-vk-key-nav {
-                        font-size: 12px;
+                        font-size: 14px;
                     }
                     .jsspeccy-vk-sublabel {
-                        font-size: 6.5px;
-                        top: 0px;
-                        right: 1px;
+                        font-size: 8px;
+                        top: 1px;
+                        right: 2px;
+                    }
+                    .jsspeccy-virtual-keyboard.sym-active-mode .jsspeccy-vk-sublabel {
+                        font-size: 9px !important;
                     }
                 }
             `;

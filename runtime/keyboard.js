@@ -183,19 +183,39 @@ export class BaseKeyboardHandler {
         this.keypressHandler = (evt) => {
             if (!evt.metaKey) evt.preventDefault();
         };
+        this.blurHandler = () => {
+            this.releaseAllKeys();
+        };
+    }
+
+    releaseAllKeys() {
+        if (this.seenKeyCodes) {
+            for (const keyId in this.seenKeyCodes) {
+                const keyInfo = this.seenKeyCodes[keyId];
+                if (keyInfo) {
+                    this.keyUp(keyInfo);
+                }
+            }
+            this.seenKeyCodes = {};
+        }
+        this.capsIsShifted = false;
+        this.symbolIsShifted = false;
     }
 
     start() {
         this.rootElement.addEventListener('keydown', this.keydownHandler);
         this.rootElement.addEventListener('keyup', this.keyupHandler);
         this.rootElement.addEventListener('keypress', this.keypressHandler);
+        window.addEventListener('blur', this.blurHandler);
         this.eventsAreBound = true;
     }
 
     stop() {
+        this.releaseAllKeys();
         this.rootElement.removeEventListener('keydown', this.keydownHandler);
         this.rootElement.removeEventListener('keyup', this.keyupHandler);
         this.rootElement.removeEventListener('keypress', this.keypressHandler);
+        window.removeEventListener('blur', this.blurHandler);
         this.eventsAreBound = false;
     }
 
@@ -283,8 +303,15 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
             const keyInfo = this.resolveKeyInfo(evt);
 
             if (keyInfo) {
-                const keyId = evt.code || evt.keyCode || evt.key;
+                const keyId = evt.code || (evt.keyCode ? 'code_' + evt.keyCode : evt.key);
                 const lastKeyInfo = this.seenKeyCodes[keyId];
+                
+                // Ignore OS auto-repeat keydown events if key is already held
+                if (evt.repeat || (lastKeyInfo && lastKeyInfo === keyInfo)) {
+                    if (!evt.metaKey) evt.preventDefault();
+                    return;
+                }
+
                 if (lastKeyInfo && lastKeyInfo !== keyInfo) {
                     this.keyUp(lastKeyInfo);
                 }
@@ -295,18 +322,13 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
         };
 
         this.keyupHandler = (evt) => {
-            const keyInfo = this.resolveKeyInfo(evt);
-            const keyId = evt.code || evt.keyCode || evt.key;
+            const keyId = evt.code || (evt.keyCode ? 'code_' + evt.keyCode : evt.key);
+            const lastKeyInfo = this.seenKeyCodes[keyId];
+            const keyInfo = lastKeyInfo || this.resolveKeyInfo(evt);
 
             if (keyInfo) {
                 this.seenKeyCodes[keyId] = null;
                 this.keyUp(keyInfo);
-            } else {
-                const lastKeyInfo = this.seenKeyCodes[keyId];
-                if (lastKeyInfo) {
-                    this.seenKeyCodes[keyId] = null;
-                    this.keyUp(lastKeyInfo);
-                }
             }
             if (!evt.metaKey) evt.preventDefault();
         };

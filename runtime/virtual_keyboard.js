@@ -2,8 +2,8 @@ import { SPECCY, caps, sym } from './keyboard.js';
 
 const KEYBOARD_LAYOUT_PLUS2 = [
     [
-        { label: 'V. NORM', key: caps(SPECCY.THREE), type: 'action', flex: 1.1 },
-        { label: 'V. INV', key: caps(SPECCY.FOUR), type: 'action', flex: 1.1 },
+        { label: 'NORM', key: caps(SPECCY.THREE), type: 'action', flex: 1.1 },
+        { label: 'INV', key: caps(SPECCY.FOUR), type: 'action', flex: 1.1 },
         { label: '1', subLabel: '!', key: SPECCY.ONE },
         { label: '2', subLabel: '@', key: SPECCY.TWO },
         { label: '3', subLabel: '#', key: SPECCY.THREE },
@@ -429,6 +429,12 @@ export class VirtualKeyboard {
 
         keyElem.addEventListener('pointerdown', pressKey);
         keyElem.addEventListener('pointerup', releaseKey);
+        keyElem.addEventListener('pointerleave', (e) => {
+            if (e.pointerType === 'touch') releaseKey(e);
+        });
+        keyElem.addEventListener('pointercancel', releaseKey);
+        keyElem.addEventListener('touchcancel', releaseKey);
+        keyElem.addEventListener('contextmenu', (e) => { e.preventDefault(); releaseKey(e); });
     }
 
     toggle() {

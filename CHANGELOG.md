@@ -1,3 +1,22 @@
+4.1.1 (2026-08-11)
+------------------
+
+* **Teclado Físico y Mapeo en Español**:
+  - Priorización de entrada por carácter (`evt.key`) para evitar la interferencia de códigos de teclas físicas sobre los símbolos impresos (`$`, `%`, `&`, `(`, `)`, `^`, `¿`, `ñ`, `Ñ`).
+  - Mapeo nativo de la tecla `ñ` y `Ñ` (mayúscula) para el layout del ZX Spectrum +2 español.
+  - Corrección de colisión entre la tecla de retroceso (`Backspace`) y la tecla numérica `8`.
+  - Mapeo de la tecla física `Bloq Mayús` (`CapsLock`) a la combinación nativa del Spectrum (`Caps Shift + 2`).
+  - Liberación automática de modificadores (`Caps Shift` / `Symbol Shift`) en eventos `keyUp` para evitar estados atascados.
+
+* **Teclado Virtual y UX Móvil**:
+  - Modificadores retenidos (`MAYÚS` y `SIMB`) en pantallas táctiles móviles hasta la selección de un carácter alfanumérico.
+  - Incremento del tamaño visual de las teclas táctiles y optimización de contraste en etiquetas (`MAYÚS`, `B. MAYÚS`, `SIMB`).
+  - Corrección de las teclas de acción `EXTRA` (`Caps Shift + Symbol Shift`), `V. NORM` (`Caps Shift + 3`), y `V. INV` (`Caps Shift + 4`).
+
+* **Interfaz de Usuario (UI)**:
+  - Adición de distintivo con el nombre y versión de la aplicación (`JSSpeccy v4.1.1`) en el extremo derecho de la barra de menú superior.
+  - Ajuste de ancho mínimo a 380px en el modo de pantalla `1x` para mantener la barra de menú en una sola fila.
+
 4.1.0 (2026-08-10)
 ------------------
 

@@ -6,10 +6,14 @@
   - Mapeo nativo de la tecla `ñ` y `Ñ` (mayúscula) para el layout del ZX Spectrum +2 español.
   - Corrección de colisión entre la tecla de retroceso (`Backspace`) y la tecla numérica `8`.
   - Mapeo de la tecla física `Bloq Mayús` (`CapsLock`) a la combinación nativa del Spectrum (`Caps Shift + 2`).
-  - Liberación automática de modificadores (`Caps Shift` / `Symbol Shift`) en eventos `keyUp` para evitar estados atascados.
+  - Filtrado de eventos de auto-repetición del sistema operativo (`evt.repeat`) para prevenir teclas atascadas o pulsaciones repetidas indefinidamente.
+  - Adición de liberador de seguridad al perder el foco de la ventana (`blur`) para soltar todas las teclas automáticamente.
+  - Liberación limpia de modificadores (`Caps Shift` / `Symbol Shift`) en eventos `keyUp` para evitar estados bloqueados.
 
 * **Teclado Virtual y UX Móvil**:
   - Modificadores retenidos (`MAYÚS` y `SIMB`) en pantallas táctiles móviles hasta la selección de un carácter alfanumérico.
+  - Manejadores de cancelación táctil (`pointercancel`, `touchcancel`, `contextmenu`) para evitar teclas atascadas al deslizar el dedo en dispositivos móviles.
+  - Filtrado en `pointerleave` exclusivo para táctil (`pointerType === 'touch'`) garantizando que el ratón en escritorio no libere prematuramente las teclas al arrastrar.
   - Incremento del tamaño visual de las teclas táctiles y optimización de contraste en etiquetas (`MAYÚS`, `B. MAYÚS`, `SIMB`).
   - Corrección de las teclas de acción `EXTRA` (`Caps Shift + Symbol Shift`), `V. NORM` (`Caps Shift + 3`), y `V. INV` (`Caps Shift + 4`).
 

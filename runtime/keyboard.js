@@ -267,6 +267,7 @@ export class StandardKeyboardHandler extends BaseKeyboardHandler {
                 if (evt.code === 'ArrowUp') return caps(SPECCY.SEVEN);
                 if (evt.code === 'ArrowDown') return caps(SPECCY.SIX);
                 if (evt.code === 'Backspace') return caps(SPECCY.ZERO);
+                if (evt.code === 'CapsLock') return caps(SPECCY.TWO);
                 if (evt.code === 'ShiftLeft' || evt.code === 'ShiftRight') return SPECCY.CAPS_SHIFT;
                 if (evt.code === 'ControlLeft' || evt.code === 'ControlRight' || evt.code === 'AltRight') return SPECCY.SYMBOL_SHIFT;
             }

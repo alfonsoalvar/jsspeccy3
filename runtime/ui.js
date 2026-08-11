@@ -3,13 +3,16 @@ import EventEmitter from 'events';
 import playIcon from './icons/play.svg';
 import closeIcon from './icons/close.svg';
 import { VirtualKeyboard } from './virtual_keyboard.js';
+import { APP_TITLE } from './common.js';
 
 
 
 export class MenuBar {
     constructor(container) {
         this.elem = document.createElement('div');
-        this.elem.style.display = 'flow-root';
+        this.elem.style.display = 'flex';
+        this.elem.style.alignItems = 'center';
+        this.elem.style.justifyContent = 'space-between';
         this.elem.style.backgroundColor = '#1e1e24';
         this.elem.style.color = '#f0f0f5';
         this.elem.style.borderBottom = '1px solid #2d2d38';
@@ -17,12 +20,32 @@ export class MenuBar {
         this.elem.style.top = '0';
         this.elem.style.width = '100%';
         container.appendChild(this.elem);
+
+        this.leftContainer = document.createElement('div');
+        this.leftContainer.style.display = 'flex';
+        this.leftContainer.style.alignItems = 'center';
+        this.elem.appendChild(this.leftContainer);
+
+        this.rightContainer = document.createElement('div');
+        this.rightContainer.style.display = 'flex';
+        this.rightContainer.style.alignItems = 'center';
+        this.rightContainer.style.paddingRight = '10px';
+        this.elem.appendChild(this.rightContainer);
+
+        this.titleBadge = document.createElement('span');
+        this.titleBadge.style.fontSize = '12px';
+        this.titleBadge.style.fontWeight = '600';
+        this.titleBadge.style.color = '#a0a0b0';
+        this.titleBadge.style.userSelect = 'none';
+        this.titleBadge.textContent = APP_TITLE;
+        this.rightContainer.appendChild(this.titleBadge);
+
         this.currentMouseenterEvent = null;
         this.currentMouseoutEvent = null;
     }
 
     addMenu(title) {
-        return new Menu(this.elem, title);
+        return new Menu(this.leftContainer, title);
     }
 
     enterFullscreen() {
@@ -642,10 +665,11 @@ export class UIController extends EventEmitter {
             this.canvas.style.maxWidth = '';
             this.canvas.style.maxHeight = '';
             this.canvas.style.aspectRatio = '';
-            this.appContainer.style.width = displayWidth + 'px';
-            this.appContainer.style.maxWidth = displayWidth + 'px';
+            const containerWidth = Math.max(displayWidth, 380);
+            this.appContainer.style.width = containerWidth + 'px';
+            this.appContainer.style.maxWidth = containerWidth + 'px';
             if (parent) {
-                parent.style.maxWidth = displayWidth + 'px';
+                parent.style.maxWidth = containerWidth + 'px';
                 parent.style.height = '';
             }
             if (this.virtualKeyboard) {

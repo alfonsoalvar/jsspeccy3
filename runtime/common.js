@@ -1,5 +1,5 @@
 export const APP_NAME = 'JSSpeccy';
-export const APP_VERSION = '4.1.0';
+export const APP_VERSION = '4.1.1';
 export const APP_TITLE = `${APP_NAME} v${APP_VERSION}`;
 export const APP_DESCRIPTION = 'Un emulador de ZX Spectrum en el navegador con soporte móvil y teclado táctil';
 export const APP_ABOUT_TEXT = 'es un emulador de ZX Spectrum en la web desarrollado con JavaScript y WebAssembly, optimizado para el ZX Spectrum +2 español con teclado táctil adaptativo.';

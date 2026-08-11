@@ -2,7 +2,8 @@ import { SPECCY, caps, sym } from './keyboard.js';
 
 const KEYBOARD_LAYOUT_PLUS2 = [
     [
-        { label: 'NORM', subLabel: 'INV', key: caps(SPECCY.FOUR), type: 'action', flex: 1.2 },
+        { label: 'V. NORM', key: caps(SPECCY.THREE), type: 'action', flex: 1.1 },
+        { label: 'V. INV', key: caps(SPECCY.FOUR), type: 'action', flex: 1.1 },
         { label: '1', subLabel: '!', key: SPECCY.ONE },
         { label: '2', subLabel: '@', key: SPECCY.TWO },
         { label: '3', subLabel: '#', key: SPECCY.THREE },
@@ -30,7 +31,7 @@ const KEYBOARD_LAYOUT_PLUS2 = [
         { label: 'P', key: SPECCY.P },
     ],
     [
-        { label: 'EXTRA', key: caps(SPECCY.THREE), flex: 1.2, type: 'action' },
+        { label: 'EXTRA', flex: 1.2, type: 'action', isExtra: true },
         { label: 'EDIT', key: caps(SPECCY.ONE), flex: 1.1, type: 'action' },
         { label: 'A', key: SPECCY.A },
         { label: 'S', subLabel: 'ñ', key: SPECCY.S },
@@ -322,6 +323,25 @@ export class VirtualKeyboard {
                 return;
             }
 
+            // Handle EXTRA (Extended Mode = Caps Shift + Symbol Shift together)
+            if (item.isExtra) {
+                if (this.emulator.keyboardHandler) {
+                    this.emulator.keyboardHandler.keyDown(SPECCY.CAPS_SHIFT);
+                    this.emulator.keyboardHandler.keyDown(SPECCY.SYMBOL_SHIFT);
+                    setTimeout(() => {
+                        if (this.emulator.keyboardHandler) {
+                            if (!this.symLocked) {
+                                this.emulator.keyboardHandler.keyUp(SPECCY.SYMBOL_SHIFT);
+                            }
+                            if (!this.capsShiftActive) {
+                                this.emulator.keyboardHandler.keyUp(SPECCY.CAPS_SHIFT);
+                            }
+                        }
+                    }, 60);
+                }
+                return;
+            }
+
             // Handle SIMB (Symbol Shift)
             if (item.isSym) {
                 this.symLocked = !this.symLocked;
@@ -362,7 +382,7 @@ export class VirtualKeyboard {
             if (e) e.preventDefault();
             keyElem.classList.remove('active');
 
-            if (item.isCaps || item.isCapsLock || item.isSym) {
+            if (item.isCaps || item.isCapsLock || item.isSym || item.isExtra) {
                 return;
             }
 
